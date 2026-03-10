@@ -141,6 +141,45 @@ export default async function GuidePage({ params }: GuidePageProps) {
               ) : null}
             </section>
           </div>
+
+          <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+            <section className="rounded-[2rem] border border-black/10 bg-white/80 p-6 sm:p-8">
+              <h2 className="text-2xl font-semibold tracking-[-0.03em]">Flow</h2>
+              <div className="mt-5 grid gap-4">
+                {section.steps.map((step, index) => (
+                  <article key={step.title} className="rounded-[1.5rem] border border-black/8 bg-[#e6efe7] px-5 py-5">
+                    <p className="text-xs font-medium uppercase tracking-[0.28em] text-slate-500">0{index + 1}</p>
+                    <h3 className="mt-3 text-xl font-semibold tracking-[-0.02em] text-slate-900">{step.title}</h3>
+                    <p className="mt-3 text-sm leading-7 text-slate-700 sm:text-base">{step.detail}</p>
+                  </article>
+                ))}
+              </div>
+            </section>
+
+            <section className="grid gap-6">
+              <article className="rounded-[2rem] border border-black/10 bg-white/80 p-6 sm:p-8">
+                <h2 className="text-2xl font-semibold tracking-[-0.03em]">What you should get</h2>
+                <div className="mt-5 grid gap-3">
+                  {section.deliverables.map((item) => (
+                    <div key={item} className="rounded-2xl border border-black/8 bg-[#f7f2e7] px-4 py-4 text-sm leading-6 text-slate-700 sm:px-5">
+                      {item}
+                    </div>
+                  ))}
+                </div>
+              </article>
+
+              <article className="rounded-[2rem] border border-black/10 bg-white/80 p-6 sm:p-8">
+                <h2 className="text-2xl font-semibold tracking-[-0.03em]">Easy mistakes</h2>
+                <div className="mt-5 grid gap-3">
+                  {section.pitfalls.map((item) => (
+                    <div key={item} className="rounded-2xl border border-black/8 bg-[#f8e5dd] px-4 py-4 text-sm leading-6 text-slate-700 sm:px-5">
+                      {item}
+                    </div>
+                  ))}
+                </div>
+              </article>
+            </section>
+          </div>
         </div>
       </main>
     </SiteShell>

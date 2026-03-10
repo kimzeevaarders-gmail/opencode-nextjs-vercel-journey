@@ -1,28 +1,7 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "provider": {
-    "ollama": {
-      "npm": "@ai-sdk/openai-compatible",
-      "name": "Ollama (local)",
-      "options": {
-        "baseURL": "http://localhost:11434/v1",
-        "timeout": 600000,
-        "chunkTimeout": 120000
-      },
-      "models": {
-        "qwen2.5-coder:3b": {
-          "name": "Qwen 2.5 Coder 3B (local)",
-          "limit": {
-            "context": 32768,
-            "output": 8192
-          }
-        }
-      }
-    }
-  },
-  "enabled_providers": ["ollama"],
-  "disabled_providers": ["openai"],
-  "model": "ollama/qwen2.5-coder:3b",
-  "small_model": "ollama/qwen2.5-coder:3b",
+  "enabled_providers": ["openai"],
+  "model": "openai/gpt-5.1-codex",
+  "small_model": "openai/codex-mini-latest",
   "share": "disabled"
 }

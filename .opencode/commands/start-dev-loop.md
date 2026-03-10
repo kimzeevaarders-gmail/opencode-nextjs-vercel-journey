@@ -2,7 +2,7 @@
 description: Start the autonomous product-owner -> developer -> reviewer loop for this project
 agent: build
 ---
-Start the repository's development loop now using the local Ollama model configured in `opencode.json`.
+Start the repository's development loop now using the Codex model configured in `opencode.json`.
 
 Workflow:
 1. Ask the `product-owner` agent to propose one high-value improvement for beginners and create a GitHub issue for it.
@@ -13,6 +13,6 @@ Workflow:
 6. Summarize the issue number, files changed, review result, commit SHA, and deploy status.
 
 Important:
-- Use the project-local Ollama model path and do not switch to a paid provider.
+- Use the project's configured Codex runtime.
 - Keep the improvement aligned with the site's purpose: helping beginners learn OpenCode, coding, Next.js, GitHub, and Vercel.
 - Do not stop after issue creation; continue until the issue is either in production or blocked by a concrete error.

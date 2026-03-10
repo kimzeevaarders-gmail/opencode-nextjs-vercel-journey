@@ -1,5 +1,9 @@
 # Ollama Setup For Autonomous OpenCode Runs
 
+This is now the optional local fallback path.
+
+The active default runtime for the project is currently `OpenAI Codex`, configured in `opencode.json`.
+
 This project is now configured to use a free local model path for the autonomous dev loop.
 
 ## What Was Installed
@@ -12,7 +16,7 @@ This project is now configured to use a free local model path for the autonomous
 
 - it avoids provider API charges
 - it gives OpenCode a local coding model for the agent loop
-- it is a better fit for `/start-dev-loop` than paid OpenAI Codex models if the goal is zero extra cost
+- it remains useful if you want a local no-cost fallback to the default Codex setup
 
 ## Important Note About Codex
 

@@ -20,7 +20,7 @@ This repository now includes a staged multi-agent workflow for continued site im
 - `.opencode/agents/developer.md`
 - `.opencode/agents/reviewer.md`
 - `.opencode/commands/start-dev-loop.md`
-- `scripts/nightly-agent-loop.ps1`
+- `scripts/autonomous-dev-loop.ps1`
 - `scripts/start-dev-loop.ps1`
 
 ## Runtime Flow
@@ -30,11 +30,11 @@ This repository now includes a staged multi-agent workflow for continued site im
 3. The reviewer checks the result.
 4. If the reviewer requests changes, the developer gets one more pass before the workflow ends.
 
-## Cost Safety
+## Runtime
 
-This workflow is now configured for a local no-cost model path through Ollama.
+This workflow now uses `OpenAI Codex` by default for `/start-dev-loop`.
 
-See `docs/ollama-setup.md` for the exact installation and model configuration.
+The manual loop no longer depends on Ollama.
 
 ## Current Scheduling Target
 

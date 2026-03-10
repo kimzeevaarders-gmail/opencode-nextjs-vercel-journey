@@ -176,7 +176,7 @@ export const guideSections: GuideSection[] = [
     intro:
       "The project is not only about a final website. It is also about showing a repeatable human-and-agent workflow that other builders can reuse on their own projects.",
     summary:
-      "Use OpenCode to explore the repository, make focused edits, save docs, run verification commands, and keep the tutorial aligned with the real state of the app. The current direction now uses a three-agent path for requirements, implementation, and review, backed by a free local Ollama coding model.",
+      "Use OpenCode to explore the repository, make focused edits, save docs, run verification commands, and keep the tutorial aligned with the real state of the app. The current direction now uses a three-agent path for requirements, implementation, and review, with Codex as the default runtime.",
     whyItMatters:
       "Readers learn faster when the prompts match reality. OpenCode becomes most useful when it updates the actual repo and verifies the actual build instead of generating disconnected snippets.",
     checklist: [
@@ -233,7 +233,7 @@ export const guideSections: GuideSection[] = [
         "Turn rough requests into reviewed requirements before starting implementation.",
         "Make code and content changes in the same pass when both are affected.",
         "Run verification commands after meaningful edits and finish with a review pass.",
-        "Start the loop manually with `/start-dev-loop` once the local Ollama model is ready.",
+        "Start the loop manually with `/start-dev-loop` using the configured Codex runtime.",
       ],
     },
     prompt:

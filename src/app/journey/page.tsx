@@ -13,7 +13,7 @@ export default function JourneyPage() {
             The path from a blank folder to a live production website.
           </h1>
           <p className="max-w-3xl text-lg leading-8 text-slate-700">
-            This project documents the exact order of operations so someone else can repeat the same build with OpenCode and arrive at the same result. The current public deployment is live at `{siteConfig.defaultUrl}`, and the next phase uses a product-owner, developer, and reviewer workflow running on a local Ollama coding model to keep improving the site.
+            This project documents the exact order of operations so someone else can repeat the same build with OpenCode and arrive at the same result. The current public deployment is live at `{siteConfig.defaultUrl}`, and the next phase uses a product-owner, developer, and reviewer workflow running on Codex by default without any Ollama dependency.
           </p>
           <div className="flex flex-wrap gap-3 text-sm font-medium">
             <a className="rounded-full bg-slate-900 px-4 py-2 text-white hover:bg-slate-700" href={siteConfig.defaultUrl} target="_blank" rel="noreferrer">

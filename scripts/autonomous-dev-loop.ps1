@@ -37,19 +37,7 @@ if ($env:OPENCODE_AUTONOMOUS_ENABLED -ne "1") {
   exit 0
 }
 
-$ollamaExe = "C:\Users\Gebruiker\AppData\Local\Programs\Ollama\ollama.exe"
-
-if (-not (Test-Path $ollamaExe)) {
-  Write-Log "Ollama is not installed. Install the local runtime before starting the autonomous workflow."
-  exit 1
-}
-
-try {
-  & $ollamaExe list | Out-Null
-} catch {
-  Write-Log "Ollama is installed but not responding. Start Ollama and pull the configured model first."
-  exit 1
-}
+Write-Log "Using OpenAI Codex runtime via opencode.json configuration."
 
 $endTime = (Get-Date).Date.AddHours(22)
 
