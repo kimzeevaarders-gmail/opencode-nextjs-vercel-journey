@@ -9,6 +9,8 @@ const checkpoints = [
   "Verify the production URL, sitemap, robots, and responsive layout after launch.",
 ];
 
+const sliderSteps = [...journeySteps, ...journeySteps];
+
 export default function Home() {
   return (
     <SiteShell>
@@ -84,17 +86,34 @@ export default function Home() {
           </article>
         </section>
 
-        <section className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {journeySteps.map((item, index) => (
-            <article
-              key={item.title}
-              className="rounded-[2rem] border border-black/10 bg-white/80 p-6 shadow-[0_20px_50px_rgba(15,23,42,0.07)] backdrop-blur"
-            >
-              <p className="text-sm font-medium uppercase tracking-[0.35em] text-slate-500">0{index + 1}</p>
-              <h2 className="mt-5 text-2xl font-semibold tracking-[-0.03em]">{item.title}</h2>
-              <p className="mt-4 text-base leading-7 text-slate-700">{item.label}</p>
-            </article>
-          ))}
+        <section className="rounded-[2rem] border border-black/10 bg-white/70 p-6 shadow-[0_20px_50px_rgba(15,23,42,0.06)] backdrop-blur sm:p-8">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <p className="text-sm uppercase tracking-[0.28em] text-slate-500">Shiny step slider</p>
+              <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-slate-900">The launch path now auto-scrolls.</h2>
+            </div>
+            <p className="max-w-xl text-sm leading-6 text-slate-600">
+              A reflective slider keeps the three core phases moving in view so the path from planning to shipping feels active instead of static.
+            </p>
+          </div>
+
+          <div className="journey-slider-shell mt-8 overflow-hidden rounded-[1.75rem] border border-black/10 bg-[linear-gradient(135deg,rgba(19,32,51,0.94),rgba(30,64,52,0.88))] p-4 sm:p-5">
+            <div className="journey-slider-track flex w-max gap-4">
+              {sliderSteps.map((item, index) => (
+                <article
+                  key={`${item.title}-${index}`}
+                  className="journey-slider-card relative w-[18rem] shrink-0 overflow-hidden rounded-[1.6rem] border border-white/15 bg-white/10 p-5 text-white shadow-[0_20px_60px_rgba(15,23,42,0.22)] backdrop-blur md:w-[22rem]"
+                >
+                  <div className="journey-slider-glow pointer-events-none absolute inset-0" />
+                  <p className="relative text-xs font-medium uppercase tracking-[0.35em] text-white/65">
+                    0{(index % journeySteps.length) + 1}
+                  </p>
+                  <h3 className="relative mt-5 text-2xl font-semibold tracking-[-0.03em] text-balance">{item.title}</h3>
+                  <p className="relative mt-4 text-sm leading-7 text-white/78">{item.label}</p>
+                </article>
+              ))}
+            </div>
+          </div>
         </section>
 
         <section className="grid gap-6 lg:grid-cols-2">

@@ -37,3 +37,91 @@ a {
   background: #132033;
   color: #f8f5ee;
 }
+
+.journey-slider-shell {
+  position: relative;
+}
+
+.journey-slider-shell::before,
+.journey-slider-shell::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: clamp(2.5rem, 8vw, 5rem);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.journey-slider-shell::before {
+  left: 0;
+  background: linear-gradient(90deg, rgba(16, 24, 39, 0.95), rgba(16, 24, 39, 0));
+}
+
+.journey-slider-shell::after {
+  right: 0;
+  background: linear-gradient(270deg, rgba(18, 62, 49, 0.9), rgba(18, 62, 49, 0));
+}
+
+.journey-slider-track {
+  animation: journey-slider-scroll 24s linear infinite;
+}
+
+.journey-slider-shell:hover .journey-slider-track {
+  animation-play-state: paused;
+}
+
+.journey-slider-card::before {
+  content: "";
+  position: absolute;
+  inset: -140% auto auto -35%;
+  width: 55%;
+  height: 320%;
+  transform: rotate(18deg);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0));
+  animation: journey-card-shine 4.8s ease-in-out infinite;
+}
+
+.journey-slider-glow {
+  background:
+    radial-gradient(circle at top right, rgba(255, 255, 255, 0.16), transparent 34%),
+    radial-gradient(circle at bottom left, rgba(245, 208, 138, 0.14), transparent 30%);
+}
+
+@keyframes journey-slider-scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(calc(-50% - 0.5rem));
+  }
+}
+
+@keyframes journey-card-shine {
+  0% {
+    transform: translateX(-180%) rotate(18deg);
+    opacity: 0;
+  }
+
+  12% {
+    opacity: 0.8;
+  }
+
+  30% {
+    transform: translateX(340%) rotate(18deg);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateX(340%) rotate(18deg);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .journey-slider-track,
+  .journey-slider-card::before {
+    animation: none;
+  }
+}
