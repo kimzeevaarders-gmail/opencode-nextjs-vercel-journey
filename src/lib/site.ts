@@ -181,7 +181,7 @@ export const guideSections: GuideSection[] = [
       "Readers learn faster when the prompts match the real runtime. This workflow matters because it makes the autonomous loop visible from start to finish: a product-owner defines the issue, a developer implements it, and a reviewer decides whether the work is safe to ship. That clear handoff model helps beginners understand what the agent is doing and why production changes wait for approval.",
     checklist: [
       "Make sure `opencode.json` is configured for the Codex runtime that should execute the loop.",
-      "Start the run from this repository with `/start-dev-loop` or `scripts/start-dev-loop.ps1`.",
+      "Start the run from this repository with `/start-dev-loop`, or use `/start-dev-loop dry-run` if you want to skip shipping.",
       "Expect the runtime flow to hand off product-owner -> developer -> reviewer inside `scripts/autonomous-dev-loop.ps1`.",
       "Know the skill mapping before you run it: `requirements-thinker` -> product-owner, `feature-implementer` -> developer, `change-reviewer` -> reviewer.",
       "Inspect `.opencode/runtime/latest-issue.txt`, `.opencode/runtime/developer-handoff.md`, `.opencode/runtime/latest-review.md`, `.opencode/runtime/latest-deploy.txt`, and `.opencode/runtime/logs/` to understand the last run.",
@@ -243,7 +243,7 @@ export const guideSections: GuideSection[] = [
         "Describe the product-owner, developer, and reviewer roles, the three skill mappings, the runtime files in `.opencode/runtime/`, and the approval gate for commit, push, and deploy.",
       ],
       tasks: [
-        "Start the loop with `/start-dev-loop` or by running `scripts/start-dev-loop.ps1`, then note that the wrapper hands control to `scripts/autonomous-dev-loop.ps1`.",
+        "Start the loop with `/start-dev-loop`, use `/start-dev-loop dry-run` to skip shipping, or run `scripts/start-dev-loop.ps1`, then note that the wrapper hands control to `scripts/autonomous-dev-loop.ps1`.",
         "Have the product-owner use `requirements-thinker` to create the issue and save its number in `.opencode/runtime/latest-issue.txt`.",
         "Have the developer use `feature-implementer` to complete the issue and write `.opencode/runtime/developer-handoff.md`.",
         "Have the reviewer use `change-reviewer` to write `APPROVED` or `REQUEST_CHANGES` into `.opencode/runtime/latest-review.md`.",

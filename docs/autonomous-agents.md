@@ -52,6 +52,12 @@ Run:
 /start-dev-loop
 ```
 
+For a safe rehearsal that skips commit, push, and production deployment, run:
+
+```text
+/start-dev-loop dry-run
+```
+
 This uses the project command in `.opencode/commands/start-dev-loop.md` and runs the product-owner -> developer -> reviewer loop directly inside OpenCode.
 
 ### In PowerShell (script path)
@@ -67,7 +73,7 @@ powershell -ExecutionPolicy Bypass -File scripts/start-dev-loop.ps1
 1. The product-owner agent proposes a new improvement and creates a GitHub issue.
 2. The developer agent implements the issue.
 3. The reviewer agent either approves the work or requests changes.
-4. If changes are requested and time remains, the developer and reviewer get one more pass.
+4. If changes are requested, the developer and reviewer get one more pass.
 5. If the review ends in `APPROVED`, the script commits and pushes `main`.
 6. Vercel then deploys production from GitHub.
 7. Runtime files are written under `.opencode/runtime/`.

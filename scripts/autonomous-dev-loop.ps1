@@ -37,13 +37,12 @@ if ($env:OPENCODE_AUTONOMOUS_ENABLED -ne "1") {
   exit 0
 }
 
+$isDryRun = $env:OPENCODE_AUTONOMOUS_DRY_RUN -eq "1"
+
 Write-Log "Using OpenAI Codex runtime via opencode.json configuration."
 
-$endTime = (Get-Date).Date.AddHours(22)
-
-if ((Get-Date) -ge $endTime) {
-  Write-Log "End time already passed. Exiting."
-  exit 0
+if ($isDryRun) {
+  Write-Log "Dry run enabled. Commit, push, and production deploy will be skipped."
 }
 
 $poPrompt = @"
@@ -69,7 +68,6 @@ Use the issue acceptance criteria exactly.
 Run validation commands that make sense.
 Write a short implementation handoff for the reviewer to $developerFile.
 If reviewer feedback already exists in $reviewFile, address it and mention how you resolved it.
-Stop if the local time is after 22:00.
 "@
 
 Invoke-Agent -Agent "developer" -Prompt $developerPrompt
@@ -79,7 +77,6 @@ Review the implementation for GitHub issue #$issueNumber.
 Read the developer handoff from $developerFile if it exists.
 If the work is good, write APPROVED to $reviewFile plus a short approval note.
 If the work needs changes, write REQUEST_CHANGES and list the exact fixes in $reviewFile.
-Stop if the local time is after 22:00.
 "@
 
 Invoke-Agent -Agent "reviewer" -Prompt $reviewerPrompt
@@ -87,10 +84,10 @@ Invoke-Agent -Agent "reviewer" -Prompt $reviewerPrompt
 if (Test-Path $reviewFile) {
   $reviewContent = Get-Content $reviewFile -Raw
 
-  if ($reviewContent -match "REQUEST_CHANGES" -and (Get-Date) -lt $endTime) {
+  if ($reviewContent -match "REQUEST_CHANGES") {
     $developerRevisionPrompt = @"
 Read GitHub issue #$issueNumber and reviewer feedback in $reviewFile.
-Resolve the requested changes if possible before 22:00.
+Resolve the requested changes if possible.
 Update $developerFile with a concise fix summary for the reviewer.
 "@
 
@@ -100,7 +97,6 @@ Update $developerFile with a concise fix summary for the reviewer.
 Re-review the updated work for GitHub issue #$issueNumber.
 Read the latest developer handoff from $developerFile.
 Write APPROVED or REQUEST_CHANGES to $reviewFile with a concise note.
-Stop if the local time is after 22:00.
 "@
 
     Invoke-Agent -Agent "reviewer" -Prompt $reviewerRecheckPrompt
@@ -111,6 +107,13 @@ if (Test-Path $reviewFile) {
   $finalReview = Get-Content $reviewFile -Raw
 
   if ($finalReview -match "APPROVED") {
+    if ($isDryRun) {
+      Add-Content -Path $deployFile -Value "Dry run approved for issue #$issueNumber. Commit, push, and production deployment were skipped."
+      Write-Log "Review approved during dry run. Skipping commit, push, and production deploy."
+      Write-Log "Autonomous workflow finished."
+      exit 0
+    }
+
     Write-Log "Review approved. Preparing commit and push."
 
     $branchStatus = git status --short
