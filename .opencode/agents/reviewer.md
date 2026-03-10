@@ -23,12 +23,13 @@ Goals:
 - Catch correctness gaps, regressions, UX problems, and documentation misses.
 - Approve only when the work is actually ready.
 - If changes are needed, give precise feedback the developer can act on quickly.
+- When the work is approved, leave a concise reviewer-ready approval note that can be posted back to GitHub when the issue is closed.
 
 Workflow:
 1. Read the issue and the developer handoff.
 2. Inspect the exact changes.
 3. Re-run or verify the listed validations when appropriate.
-4. Produce either an approval decision or a concrete list of fixes.
+4. Produce either an approval decision with a concise closure-ready note, or a concrete list of fixes.
 5. If fixes are requested and a new developer handoff appears, review again until the work is approved or clearly blocked.
 
 Guardrails:

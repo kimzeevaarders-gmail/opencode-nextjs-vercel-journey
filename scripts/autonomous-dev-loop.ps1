@@ -69,6 +69,29 @@ function Clear-LoopFile {
   }
 }
 
+function Close-IssueAfterApproval {
+  param(
+    [string]$IssueNumber,
+    [string]$ReviewContent
+  )
+
+  $commentBody = $ReviewContent.Trim()
+
+  if (-not $commentBody) {
+    $commentBody = "APPROVED`n`nReviewer approved the implementation and the issue is now closed."
+  }
+
+  gh issue comment $IssueNumber --body $commentBody | Tee-Object -FilePath $logPath -Append
+  if ($LASTEXITCODE -ne 0) {
+    throw "gh issue comment failed for issue #$IssueNumber"
+  }
+
+  gh issue close $IssueNumber | Tee-Object -FilePath $logPath -Append
+  if ($LASTEXITCODE -ne 0) {
+    throw "gh issue close failed for issue #$IssueNumber"
+  }
+}
+
 if ($env:OPENCODE_AUTONOMOUS_ENABLED -ne "1") {
   Write-Log "Autonomous workflow is disabled. Set OPENCODE_AUTONOMOUS_ENABLED=1 to allow real runs."
   exit 0
@@ -79,7 +102,7 @@ $isDryRun = $env:OPENCODE_AUTONOMOUS_DRY_RUN -eq "1"
 Write-Log "Using OpenAI Codex runtime via opencode.json configuration."
 
 if ($isDryRun) {
-  Write-Log "Dry run enabled. Commit, push, and production deploy will be skipped."
+  Write-Log "Dry run enabled. Commit, push, issue closure, and production deploy will be skipped."
 }
 
 $issueNumber = Get-OpenIssueNumber
@@ -197,8 +220,8 @@ if (Test-Path $reviewFile) {
 
   if ($finalReview -match "APPROVED") {
     if ($isDryRun) {
-      Add-Content -Path $deployFile -Value "Dry run approved for issue #$issueNumber. Commit, push, and production deployment were skipped."
-      Write-Log "Review approved during dry run. Skipping commit, push, and production deploy."
+      Add-Content -Path $deployFile -Value "Dry run approved for issue #$issueNumber. Commit, push, issue closure, and production deployment were skipped."
+      Write-Log "Review approved during dry run. Skipping commit, push, issue closure, and production deploy."
       Write-Log "Autonomous workflow finished."
       exit 0
     }
@@ -215,12 +238,21 @@ if (Test-Path $reviewFile) {
       $env:GIT_COMMITTER_NAME = "Kim Zeevaarders"
       $env:GIT_COMMITTER_EMAIL = "kimzeevaarders@gmail.com"
       git commit -m $commitMessage | Tee-Object -FilePath $logPath -Append
+      if ($LASTEXITCODE -ne 0) {
+        throw "git commit failed for issue #$issueNumber"
+      }
       git push origin main | Tee-Object -FilePath $logPath -Append
+      if ($LASTEXITCODE -ne 0) {
+        throw "git push failed for issue #$issueNumber"
+      }
       Add-Content -Path $deployFile -Value "Pushed issue #$issueNumber to main for production deployment."
       Write-Log "Changes pushed to main. Vercel should deploy production automatically."
     } else {
       Write-Log "Nothing changed after review approval, so no commit or push was needed."
     }
+
+    Close-IssueAfterApproval -IssueNumber $issueNumber -ReviewContent $finalReview
+    Write-Log "Reviewer comment posted and issue closed after approval."
   } else {
     Write-Log "Review did not end in APPROVED. Skipping commit and deploy."
   }

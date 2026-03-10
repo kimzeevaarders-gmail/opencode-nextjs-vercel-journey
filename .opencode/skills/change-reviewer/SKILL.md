@@ -26,6 +26,7 @@ Use this after implementation is complete and before calling the task done.
 - Note any reusable process improvement that should feed back into the local skills or agent instructions.
 - If no issues are found, say that clearly and mention what was checked.
 - If fixes arrive after a requested-change review, re-review the updated work until it is approved or clearly blocked.
+- When approving, include a short approval note that is good enough to post as the reviewer comment when the GitHub issue is closed.
 
 ## Expected output
 
@@ -35,6 +36,8 @@ Structure the response in this order:
 2. Findings
 3. Missing validation or documentation
 4. Ship recommendation
+
+When the verdict is approval, make the wording concise enough that it can be reused in a GitHub issue comment.
 
 ## Severity guidance
 

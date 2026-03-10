@@ -59,7 +59,7 @@ Run:
 /start-dev-loop
 ```
 
-For a safe rehearsal that skips commit, push, and production deployment, run:
+For a safe rehearsal that skips commit, push, issue closure, and production deployment, run:
 
 ```text
 /start-dev-loop dry-run
@@ -83,6 +83,6 @@ powershell -ExecutionPolicy Bypass -File scripts/start-dev-loop.ps1
 4. The product-owner agent answers those questions, and the developer agent runs again until there are no blocking questions left.
 5. The reviewer agent either approves the work or requests changes.
 6. If changes are requested, the developer and reviewer keep cycling until the work is approved or clearly blocked.
-7. If the review ends in `APPROVED`, the script commits and pushes `main`.
+7. If the review ends in `APPROVED`, the script commits and pushes `main`, posts the reviewer approval note to the GitHub issue, and closes the issue.
 8. Vercel then deploys production from GitHub.
 9. Runtime files are written under `.opencode/runtime/`, including clarification files when the developer needs product-owner answers.

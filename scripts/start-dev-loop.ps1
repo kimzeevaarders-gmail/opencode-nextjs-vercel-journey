@@ -14,7 +14,7 @@ $env:OPENCODE_AUTONOMOUS_ENABLED = "1"
 
 if ($DryRun) {
   $env:OPENCODE_AUTONOMOUS_DRY_RUN = "1"
-  Write-Host "Dry run enabled: commit, push, and production deploy will be skipped."
+  Write-Host "Dry run enabled: commit, push, issue closure, and production deploy will be skipped."
 } else {
   $env:OPENCODE_AUTONOMOUS_DRY_RUN = "0"
 }

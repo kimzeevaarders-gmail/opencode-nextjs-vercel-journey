@@ -62,7 +62,7 @@ Current agent runtime default:
 Manual OpenCode command:
 
 - `/start-dev-loop` starts the repository's autonomous dev-loop wrapper
-- `/start-dev-loop dry-run` runs the same flow but skips commit, push, and production deployment
+- `/start-dev-loop dry-run` runs the same flow but skips commit, push, issue closure, and production deployment
 
 Dev-loop default:
 
