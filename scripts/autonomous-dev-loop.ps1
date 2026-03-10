@@ -1,5 +1,9 @@
 $ErrorActionPreference = "Stop"
 
+if (Get-Variable -Name PSNativeCommandUseErrorActionPreference -ErrorAction SilentlyContinue) {
+  $PSNativeCommandUseErrorActionPreference = $false
+}
+
 $repoRoot = Split-Path -Parent $PSScriptRoot
 $stateDir = Join-Path $repoRoot ".opencode\runtime"
 $logDir = Join-Path $stateDir "logs"
@@ -117,6 +121,7 @@ First check whether this repository already has an open GitHub issue that should
 If an open issue already exists, write only that issue number to $issueFile and append a one-paragraph summary to $logPath.
 If no open issue exists, invent one high-value, low-risk improvement that makes the site more learnful or attractive for beginners exploring OpenCode, coding, Next.js, Vercel, and GitHub.
 Create a GitHub issue for that idea with a concise title, why, scope, acceptance criteria, and developer handoff.
+If you notice a reusable planning improvement while doing this, update the relevant local skill or agent instruction so the workflow gets better over time.
 After choosing or creating the issue, write only the issue number to $issueFile.
 Also append a one-paragraph summary to $logPath.
 "@
@@ -141,6 +146,7 @@ Read GitHub issue #$issueNumber in this repository.
 If the ticket is still unclear in a way that would materially change the implementation, write concise blocking questions to $questionFile and wait for product-owner answers instead of guessing.
 If product-owner answers already exist in $answerFile, use them to continue.
 Once the work is clear enough, implement the issue, use the acceptance criteria exactly, run validation commands that make sense, and write a short implementation handoff for the reviewer to $developerFile.
+If you discover a reusable implementation improvement while working, update the relevant local skill or agent instruction before finishing.
 If reviewer feedback already exists in $reviewFile, address it and mention how you resolved it.
 "@
 
@@ -157,6 +163,7 @@ Read GitHub issue #$issueNumber in this repository.
 The developer has blocking clarification questions in $questionFile.
 Answer them directly and concretely in $answerFile so implementation can continue without guessing.
 Do not create a new issue unless the existing issue is truly wrong for the task.
+If the clarification reveals a reusable planning improvement, update the relevant local skill or agent instruction too.
 "@
 
   Invoke-Agent -Agent "product-owner" -Prompt $poClarificationPrompt
@@ -169,6 +176,7 @@ Review the implementation for GitHub issue #$issueNumber.
 Read the developer handoff from $developerFile if it exists.
 If the work is good, write APPROVED to $reviewFile plus a short approval note.
 If the work needs changes, write REQUEST_CHANGES and list the exact fixes in $reviewFile.
+If the review reveals a reusable workflow improvement, update the relevant local skill or agent instruction before finishing.
 "@
 
   Invoke-Agent -Agent "reviewer" -Prompt $reviewerPrompt
@@ -188,6 +196,7 @@ Read GitHub issue #$issueNumber and reviewer feedback in $reviewFile.
 Resolve the requested changes if possible.
 If anything is still unclear, write concise blocking questions to $questionFile so the product-owner can answer them in $answerFile.
 After resolving the requested changes, update $developerFile with a concise fix summary for the reviewer.
+If you discover a reusable implementation improvement while fixing review feedback, update the relevant local skill or agent instruction too.
 "@
 
   Invoke-Agent -Agent "developer" -Prompt $developerRevisionPrompt
@@ -198,6 +207,7 @@ After resolving the requested changes, update $developerFile with a concise fix 
     $poClarificationPrompt = @"
 Read GitHub issue #$issueNumber in this repository and the developer's blocking questions in $questionFile.
 Answer them directly and concretely in $answerFile so implementation can continue without guessing.
+If the clarification reveals a reusable planning improvement, update the relevant local skill or agent instruction too.
 "@
 
     Invoke-Agent -Agent "product-owner" -Prompt $poClarificationPrompt
@@ -208,6 +218,7 @@ Read GitHub issue #$issueNumber, reviewer feedback in $reviewFile, and product-o
 Use those answers to finish the requested fixes.
 If anything is still unclear, write concise blocking questions to $questionFile.
 When the fixes are complete, update $developerFile with a concise fix summary for the reviewer.
+If you discover a reusable implementation improvement while resolving the feedback, update the relevant local skill or agent instruction too.
 "@
 
     Invoke-Agent -Agent "developer" -Prompt $developerFollowUpPrompt

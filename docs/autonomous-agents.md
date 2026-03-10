@@ -31,6 +31,7 @@ This repository now includes a staged multi-agent workflow for continued site im
 4. The product owner answers those questions and the developer resumes until the implementation is no longer blocked.
 5. The reviewer checks the result.
 6. If the reviewer requests changes, the developer fixes them and the reviewer checks again until the work is approved or clearly blocked.
+7. When any agent discovers a reusable improvement, the relevant local skill or agent file should be updated during the run so the loop keeps learning.
 
 When clarification is needed, the runtime can temporarily record:
 
