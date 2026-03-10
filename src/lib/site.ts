@@ -174,70 +174,84 @@ export const guideSections: GuideSection[] = [
     shortTitle: "OpenCode",
     title: "Use OpenCode as the operator that plans, edits, verifies, and documents each step.",
     intro:
-      "The project is not only about a final website. It is also about showing a repeatable human-and-agent workflow that other builders can reuse on their own projects.",
+      "The project is not only about a final website. It is also about showing a repeatable autonomous dev loop that beginners can follow, inspect, and reuse on their own projects.",
     summary:
-      "Use OpenCode to explore the repository, make focused edits, save docs, run verification commands, and keep the tutorial aligned with the real state of the app. The current direction now uses a three-agent path for requirements, implementation, and review, with Codex as the default runtime.",
+      "Use OpenCode to run an explicit Codex dev loop: product-owner, then developer, then reviewer. The run starts from `/start-dev-loop` or `scripts/start-dev-loop.ps1`, flows into `scripts/autonomous-dev-loop.ps1`, writes status files under `.opencode/runtime/`, and only commits, pushes, and deploys after the reviewer records `APPROVED`.",
     whyItMatters:
-      "Readers learn faster when the prompts match reality. OpenCode becomes most useful when it updates the actual repo and verifies the actual build instead of generating disconnected snippets.",
+      "Readers learn faster when the prompts match the real runtime. This workflow matters because it makes the autonomous loop visible from start to finish: a product-owner defines the issue, a developer implements it, and a reviewer decides whether the work is safe to ship. That clear handoff model helps beginners understand what the agent is doing and why production changes wait for approval.",
     checklist: [
-      "Keep prompts specific about outcome, files, and verification.",
-      "Ask for docs and code updates in the same workflow when the change affects both.",
-      "Run lint and build after meaningful edits.",
-      "Use OpenCode to explain tradeoffs, not just produce code.",
-      "Route new work through the requirements-thinker, feature-implementer, and change-reviewer skills.",
+      "Make sure `opencode.json` is configured for the Codex runtime that should execute the loop.",
+      "Start the run from this repository with `/start-dev-loop` or `scripts/start-dev-loop.ps1`.",
+      "Expect the runtime flow to hand off product-owner -> developer -> reviewer inside `scripts/autonomous-dev-loop.ps1`.",
+      "Know the skill mapping before you run it: `requirements-thinker` -> product-owner, `feature-implementer` -> developer, `change-reviewer` -> reviewer.",
+      "Inspect `.opencode/runtime/latest-issue.txt`, `.opencode/runtime/developer-handoff.md`, `.opencode/runtime/latest-review.md`, `.opencode/runtime/latest-deploy.txt`, and `.opencode/runtime/logs/` to understand the last run.",
+      "Remember that commit, push, and deploy happen only after the review file ends in `APPROVED`.",
     ],
     steps: [
       {
-        title: "Anchor every request in the repo",
+        title: "Start the wrapper from the repo root",
         detail:
-          "Start from the current working tree so OpenCode reads the live files, not a remembered or imaginary project structure.",
+          "Run `/start-dev-loop` in OpenCode or execute `scripts/start-dev-loop.ps1` directly. That entry point sets up the autonomous environment, including `OPENCODE_AUTONOMOUS_ENABLED=1`, and then calls `scripts/autonomous-dev-loop.ps1`, which owns the real runtime flow.",
       },
       {
-        title: "Make changes in small verified passes",
+        title: "Product-owner defines the work first",
         detail:
-          "Ask OpenCode to inspect, edit, then validate with lint and build rather than trying to do everything blindly in one shot.",
+          "Inside `scripts/autonomous-dev-loop.ps1`, the first Codex role is the product-owner. It uses the `requirements-thinker` skill to shape the next improvement into a clear GitHub issue, then writes that issue number to `.opencode/runtime/latest-issue.txt` so the rest of the run knows exactly what to build.",
       },
       {
-        title: "Save operational knowledge as content",
+        title: "Developer implements and hands off",
         detail:
-          "When a deployment or domain decision matters, record it in the site or docs immediately so the knowledge survives the session.",
+          "The second Codex role is the developer. It uses the `feature-implementer` skill to read the created issue, make the smallest complete code or content change, run relevant validation, and save a reviewer-facing summary in `.opencode/runtime/developer-handoff.md`.",
       },
       {
-        title: "Use the agent for launch polish",
+        title: "Reviewer decides whether shipping is allowed",
         detail:
-          "OpenCode is especially useful for metadata, routing, deployment checks, domain instructions, and identifying missing production details before shipping.",
+          "The third Codex role is the reviewer. It uses the `change-reviewer` skill to compare the implementation against the issue and developer handoff, then writes either `APPROVED` or `REQUEST_CHANGES` to `.opencode/runtime/latest-review.md`. If changes are requested, the loop can send the work back to the developer for another pass before review runs again.",
       },
       {
-        title: "Split future work across three skills",
+        title: "Runtime files explain the state of the run",
         detail:
-          "Use `requirements-thinker` to clarify the ask, `feature-implementer` to build it, and `change-reviewer` to check correctness before calling the task done.",
+          "During and after the run, `.opencode/runtime/latest-issue.txt` stores the current issue number, `.opencode/runtime/developer-handoff.md` stores the developer summary, `.opencode/runtime/latest-review.md` stores the latest review outcome, `.opencode/runtime/latest-deploy.txt` stores the most recent deployment note, and `.opencode/runtime/logs/` keeps the timestamped execution logs.",
+      },
+      {
+        title: "Approval gates commit, push, and deploy",
+        detail:
+          "The loop does not ship on developer completion alone. Commit, push, and deployment only happen when `.opencode/runtime/latest-review.md` ends in `APPROVED`; otherwise the run stops with review feedback and no production update.",
+      },
+      {
+        title: "The skill mapping stays fixed across every run",
+        detail:
+          "The roles do not change between runs: `requirements-thinker` always powers the product-owner, `feature-implementer` always powers the developer, and `change-reviewer` always powers the reviewer. That fixed mapping keeps the autonomous loop easy to explain and easier to debug.",
       },
     ],
     deliverables: [
-      "A site whose content matches the real repository.",
-      "Reusable prompts that help another person repeat the build.",
-      "A documented verification habit for code and deployment work.",
+      "A GitHub issue created by the product-owner and mirrored locally in `.opencode/runtime/latest-issue.txt`.",
+      "A developer handoff in `.opencode/runtime/developer-handoff.md`, a reviewer decision in `.opencode/runtime/latest-review.md`, and execution details in `.opencode/runtime/logs/`.",
+      "A deployment note in `.opencode/runtime/latest-deploy.txt` when shipping happens after approval.",
+      "A commit, push, and deploy only when the reviewer finishes with `APPROVED`.",
     ],
     pitfalls: [
-      "Using vague prompts that never specify what success looks like.",
-      "Generating docs that drift away from the actual project files.",
-      "Skipping verification after structural edits.",
+      "Starting the loop outside this repository, which breaks the script path and runtime file assumptions.",
+      "Skipping the wrapper details and not realizing `/start-dev-loop` and `scripts/start-dev-loop.ps1` both lead into `scripts/autonomous-dev-loop.ps1`.",
+      "Treating the developer handoff as the final answer instead of waiting for the reviewer decision.",
+      "Assuming commit, push, or deploy can happen after `REQUEST_CHANGES`; they cannot.",
+      "Ignoring `.opencode/runtime/`, which is the clearest place to inspect what the last autonomous run actually wrote.",
     ],
     executionGuide: {
       prompts: [
-        "Turn this repository into a real launch guide and keep the content aligned with the actual codebase.",
-        "Inspect the current project, fill in missing deployment details, and verify what still blocks launch.",
+        "Explain the exact Codex autonomous dev loop for this repository, from `/start-dev-loop` and `scripts/start-dev-loop.ps1` into `scripts/autonomous-dev-loop.ps1`.",
+        "Describe the product-owner, developer, and reviewer roles, the three skill mappings, the runtime files in `.opencode/runtime/`, and the approval gate for commit, push, and deploy.",
       ],
       tasks: [
-        "Read the existing repo structure and docs before editing.",
-        "Turn rough requests into reviewed requirements before starting implementation.",
-        "Make code and content changes in the same pass when both are affected.",
-        "Run verification commands after meaningful edits and finish with a review pass.",
-        "Start the loop manually with `/start-dev-loop` using the configured Codex runtime.",
+        "Start the loop with `/start-dev-loop` or by running `scripts/start-dev-loop.ps1`, then note that the wrapper hands control to `scripts/autonomous-dev-loop.ps1`.",
+        "Have the product-owner use `requirements-thinker` to create the issue and save its number in `.opencode/runtime/latest-issue.txt`.",
+        "Have the developer use `feature-implementer` to complete the issue and write `.opencode/runtime/developer-handoff.md`.",
+        "Have the reviewer use `change-reviewer` to write `APPROVED` or `REQUEST_CHANGES` into `.opencode/runtime/latest-review.md`.",
+        "Read `.opencode/runtime/latest-deploy.txt` and `.opencode/runtime/logs/` to confirm whether approval led to commit, push, and deployment.",
       ],
     },
     prompt:
-      "Turn this repository into a real launch guide. Inspect the current project, fill in missing pages and deployment details, and verify everything needed for a Vercel deployment with a custom domain.",
+      "Explain the exact autonomous dev loop for this repository in beginner-friendly language. Show how `/start-dev-loop` and `scripts/start-dev-loop.ps1` feed into `scripts/autonomous-dev-loop.ps1`, how Codex runs product-owner -> developer -> reviewer, how `requirements-thinker`, `feature-implementer`, and `change-reviewer` map to those roles, which files are written under `.opencode/runtime/`, and why commit, push, and deploy only happen after `APPROVED`.",
   },
   {
     slug: "project-setup",
