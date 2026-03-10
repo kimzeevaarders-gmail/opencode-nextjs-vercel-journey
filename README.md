@@ -2,6 +2,8 @@
 
 This repository contains a server-rendered `Next.js` website that documents the full path from local setup to a live deployment.
 
+Live site: `https://opencodejourney.vercel.app`
+
 ## Stack
 
 - `Next.js` 16
@@ -26,6 +28,23 @@ The site is meant to teach other people how to:
 npm install
 npm run dev
 ```
+
+## Verification
+
+```bash
+npm run lint
+npm run build
+```
+
+The production deployment currently lives on the free Vercel subdomain `opencodejourney.vercel.app`.
+
+## What This Repo Now Documents
+
+- the prompts and tasks used in each major step of the build
+- the GitHub-to-Vercel deployment path that was actually used
+- the Vercel environment variable needed for production: `NEXT_PUBLIC_SITE_URL`
+- the generated `robots.txt` and `sitemap.xml` endpoints used for production verification
+- the extra Vercel account step of connecting GitHub before trying to link the repository inside Vercel
 
 ## Important Docs
 

@@ -4,6 +4,8 @@
 
 Build a full server-rendered website with the latest stable `Next.js`, `React`, `TypeScript`, and current Node.js LTS. The site explains the complete journey from zero to a live production deployment so other people can repeat the process with OpenCode.
 
+Current status: the site is live on `https://opencodejourney.vercel.app` and the repo now documents the prompts, tasks, verification steps, and Vercel account setup details used to reach production.
+
 ## Recommended Hosting Path
 
 Primary deployment target: `Vercel`
@@ -86,8 +88,7 @@ An initial repo containing:
 
 ## Next Steps
 
-1. Create the GitHub repository.
-2. Scaffold the app.
-3. Build the first version of the website structure.
-4. Commit the initial project.
-5. Deploy to Vercel.
+1. Keep the Vercel project connected to GitHub for easier preview workflows.
+2. Add a paid custom domain later if a non-`vercel.app` URL becomes necessary.
+3. Continue refining the tutorial content as new deployment lessons appear.
+4. Optionally document the exact custom-domain DNS flow once a registrar is chosen.

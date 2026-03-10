@@ -1,12 +1,12 @@
 import Link from "next/link";
 import { SiteShell } from "@/components/site-shell";
-import { guideSections, journeySteps } from "@/lib/site";
+import { deploymentTimeline, guideSections, journeySteps, launchChecklist, siteConfig } from "@/lib/site";
 
 const checkpoints = [
   "Use current Node.js LTS and the latest stable Next.js + React.",
   "Keep the main deployment path on Vercel for the lowest operational friction.",
-  "Document each command so other people can repeat the same journey with OpenCode.",
-  "Make the site responsive before you call it ready.",
+  "Document the repo, the prompts, and the exact deployment commands together.",
+  "Verify the production URL, sitemap, robots, and responsive layout after launch.",
 ];
 
 export default function Home() {
@@ -42,7 +42,7 @@ export default function Home() {
               Build a server-rendered Next.js site and publish the full journey so others can follow it.
             </h1>
             <p className="max-w-2xl text-base leading-8 text-slate-700 sm:text-xl">
-              This project is the working blueprint: latest React, latest Next.js, TypeScript, GitHub, Vercel, custom domain setup, cost guidance, and an optional AWS path.
+              This project is the working blueprint: latest React, latest Next.js, TypeScript, GitHub, Vercel, a live production deployment at `opencodejourney.vercel.app`, custom domain guidance, cost notes, and an optional AWS path.
             </p>
           </div>
 
@@ -50,9 +50,38 @@ export default function Home() {
             <p className="text-sm uppercase tracking-[0.25em] text-slate-300">Primary recommendation</p>
             <h2 className="mt-3 text-2xl font-semibold">Deploy on Vercel first</h2>
             <p className="mt-3 text-sm leading-7 text-slate-300">
-              You want full server rendering with the least operational overhead. Vercel is the cleanest default, while AWS stays available as an advanced follow-up track.
+              You want full server rendering with the least operational overhead. Vercel is the cleanest default, and this exact project is already live on the free subdomain at `opencodejourney.vercel.app`.
             </p>
           </div>
+        </section>
+
+        <section className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+          <article className="rounded-[2rem] border border-black/10 bg-white/80 p-6 shadow-[0_20px_50px_rgba(15,23,42,0.06)]">
+            <p className="text-sm uppercase tracking-[0.28em] text-slate-500">Live status</p>
+            <h2 className="mt-4 text-3xl font-semibold tracking-[-0.03em]">The tutorial is live and documented.</h2>
+            <p className="mt-4 max-w-2xl text-base leading-7 text-slate-700">
+              The repository is pushed, the Vercel project is deployed, the production URL is active, and the guide now includes the prompts, tasks, and verification steps used to reach launch.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3 text-sm font-medium">
+              <a className="rounded-full bg-slate-900 px-4 py-2 text-white hover:bg-slate-700" href={siteConfig.defaultUrl} target="_blank" rel="noreferrer">
+                Open live site
+              </a>
+              <Link className="rounded-full border border-black/10 px-4 py-2 hover:bg-black/5" href="/guide/vercel-deploy">
+                Read deploy guide
+              </Link>
+            </div>
+          </article>
+
+          <article className="rounded-[2rem] border border-black/10 bg-white/80 p-6 shadow-[0_20px_50px_rgba(15,23,42,0.06)]">
+            <p className="text-sm uppercase tracking-[0.28em] text-slate-500">Launch checklist</p>
+            <div className="mt-4 grid gap-3">
+              {launchChecklist.map((item) => (
+                <div key={item} className="rounded-2xl border border-black/8 bg-[#f7f2e7] px-4 py-4 text-sm leading-6 text-slate-700">
+                  {item}
+                </div>
+              ))}
+            </div>
+          </article>
         </section>
 
         <section className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
@@ -86,10 +115,10 @@ export default function Home() {
 
         <section className="grid gap-8 rounded-[2rem] border border-black/10 bg-white/70 p-8 backdrop-blur lg:grid-cols-[1fr_1.1fr]">
           <div>
-            <p className="text-sm uppercase tracking-[0.3em] text-slate-500">What is already in motion</p>
-            <h2 className="mt-4 text-3xl font-semibold tracking-[-0.03em]">The repo and plan now exist.</h2>
+            <p className="text-sm uppercase tracking-[0.3em] text-slate-500">What changed most recently</p>
+            <h2 className="mt-4 text-3xl font-semibold tracking-[-0.03em]">The repo, deployment, and verification trail now exist.</h2>
             <p className="mt-4 max-w-xl text-base leading-7 text-slate-700">
-              The implementation plan is saved in the repository and the app is scaffolded with the current stable stack, so the next passes can focus on writing the journey content and polishing deployment.
+              The implementation plan is saved in the repository, the app is live on Vercel, and the site content now reflects the real prompts, tasks, environment setup, GitHub connection work, and deployment verification used to get here.
             </p>
           </div>
           <div className="grid gap-4">
@@ -97,6 +126,18 @@ export default function Home() {
               <div key={item} className="rounded-2xl border border-black/8 bg-[#f7f2e7] px-5 py-4 text-sm leading-6 text-slate-700">
                 {item}
               </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="rounded-[2rem] border border-black/10 bg-white/80 p-8 shadow-[0_20px_50px_rgba(15,23,42,0.06)]">
+          <p className="text-sm uppercase tracking-[0.28em] text-slate-500">Deployment timeline</p>
+          <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            {deploymentTimeline.map((item) => (
+              <article key={item.title} className="rounded-2xl border border-black/8 bg-[#e6efe7] px-5 py-5">
+                <h2 className="text-lg font-semibold tracking-[-0.02em] text-slate-900">{item.title}</h2>
+                <p className="mt-3 text-sm leading-6 text-slate-700">{item.detail}</p>
+              </article>
             ))}
           </div>
         </section>

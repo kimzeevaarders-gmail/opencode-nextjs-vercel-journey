@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { SiteShell } from "@/components/site-shell";
-import { guideSections } from "@/lib/site";
+import { guideSections, siteConfig } from "@/lib/site";
 
 export default function JourneyPage() {
   return (
@@ -13,8 +13,16 @@ export default function JourneyPage() {
             The path from a blank folder to a live production website.
           </h1>
           <p className="max-w-3xl text-lg leading-8 text-slate-700">
-            This project documents the exact order of operations so someone else can repeat the same build with OpenCode and arrive at the same result.
+            This project documents the exact order of operations so someone else can repeat the same build with OpenCode and arrive at the same result. The current public deployment is live at `{siteConfig.defaultUrl}`.
           </p>
+          <div className="flex flex-wrap gap-3 text-sm font-medium">
+            <a className="rounded-full bg-slate-900 px-4 py-2 text-white hover:bg-slate-700" href={siteConfig.defaultUrl} target="_blank" rel="noreferrer">
+              Open deployed site
+            </a>
+            <Link className="rounded-full border border-black/10 px-4 py-2 hover:bg-black/5" href="/guide/vercel-deploy">
+              Deployment section
+            </Link>
+          </div>
         </div>
 
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">

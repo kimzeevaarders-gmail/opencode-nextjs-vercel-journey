@@ -367,7 +367,7 @@ export const guideSections: GuideSection[] = [
     intro:
       "For this project, Vercel is the shortest path from repository to public production URL. The goal is to keep configuration light and lean on the platform defaults that Next.js is built to use.",
     summary:
-      "Push the repository to GitHub, import it into Vercel, accept Next.js detection, configure environment variables, and let the default branch power production while pull requests create previews.",
+      "Push the repository to GitHub, import it into Vercel, accept Next.js detection, configure environment variables, and let the default branch power production while pull requests create previews. This project is now live at `opencodejourney.vercel.app`.",
     whyItMatters:
       "A great deployment chapter makes the reader feel like shipping is normal, not advanced. Vercel works best here because it removes most of the infrastructure choices from the first release.",
     checklist: [
@@ -380,7 +380,7 @@ export const guideSections: GuideSection[] = [
       {
         title: "Import from GitHub",
         detail:
-          "In the Vercel dashboard, create a new project from the connected GitHub repository and let Vercel detect that it is a Next.js app.",
+          "In the Vercel dashboard, create a new project from the connected GitHub repository and let Vercel detect that it is a Next.js app. If GitHub import fails, add the GitHub Login Connection in Vercel account settings first.",
       },
       {
         title: "Review project settings",
@@ -400,7 +400,7 @@ export const guideSections: GuideSection[] = [
     ],
     deliverables: [
       "A live Vercel project connected to GitHub.",
-      "A production deployment from the default branch.",
+      "A production deployment at `https://opencodejourney.vercel.app`.",
       "Preview deployments for future changes.",
     ],
     pitfalls: [
@@ -416,7 +416,7 @@ export const guideSections: GuideSection[] = [
       tasks: [
         "Import the GitHub repo into Vercel and review the detected settings.",
         "Add required environment variables such as `NEXT_PUBLIC_SITE_URL`.",
-        "Deploy production from the default branch and use previews for future changes.",
+        "Deploy production from the default branch, verify `opencodejourney.vercel.app`, and use previews for future changes.",
       ],
     },
     commands: ["vercel", "vercel env add NEXT_PUBLIC_SITE_URL", "vercel --prod"],
@@ -698,10 +698,10 @@ export const journeySteps = [
 export const launchChecklist = [
   "GitHub repository pushed and connected to Vercel.",
   "`npm run lint` and `npm run build` both pass locally.",
-  "`NEXT_PUBLIC_SITE_URL` points to the final production origin.",
-  "Apex and `www` domain entries are configured in Vercel.",
-  "Registrar DNS records match the values shown in Vercel.",
-  "HTTPS, redirects, metadata, robots, and sitemap all work on the real domain.",
+  "`NEXT_PUBLIC_SITE_URL` points to `https://opencodejourney.vercel.app`.",
+  "Production is live on the free Vercel subdomain with HTTPS enabled.",
+  "`robots.txt` and `sitemap.xml` both respond successfully in production.",
+  "GitHub can now be connected in Vercel for smoother repo imports and previews.",
 ];
 
 export const deploymentTimeline = [
@@ -719,6 +719,6 @@ export const deploymentTimeline = [
   },
   {
     title: "Launch verify",
-    detail: "Open the real domain, confirm HTTPS, redirects, metadata, mobile layout, and preview workflow.",
+    detail: "Open `opencodejourney.vercel.app`, confirm HTTPS, metadata, sitemap, robots, mobile layout, and the future preview workflow.",
   },
 ];
