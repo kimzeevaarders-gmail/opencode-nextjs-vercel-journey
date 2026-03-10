@@ -24,6 +24,7 @@ Use this after implementation is complete and before calling the task done.
 - Inspect the exact files that changed instead of reviewing the whole project blindly.
 - Prefer concise, actionable findings.
 - Note any reusable process improvement that should feed back into the local skills or agent instructions.
+- Auto-learn from recurring review findings by tightening the relevant local skills or agent instructions when that would prevent the same issue next time.
 - If no issues are found, say that clearly and mention what was checked.
 - If fixes arrive after a requested-change review, re-review the updated work until it is approved or clearly blocked.
 - When approving, include a short approval note that is good enough to post as the reviewer comment when the GitHub issue is closed.
