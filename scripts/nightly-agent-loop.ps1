@@ -6,6 +6,7 @@ $logDir = Join-Path $stateDir "logs"
 $issueFile = Join-Path $stateDir "latest-issue.txt"
 $reviewFile = Join-Path $stateDir "latest-review.md"
 $developerFile = Join-Path $stateDir "developer-handoff.md"
+$deployFile = Join-Path $stateDir "latest-deploy.txt"
 
 New-Item -ItemType Directory -Force -Path $stateDir | Out-Null
 New-Item -ItemType Directory -Force -Path $logDir | Out-Null
@@ -36,9 +37,18 @@ if ($env:OPENCODE_AUTONOMOUS_ENABLED -ne "1") {
   exit 0
 }
 
-if ($env:OPENCODE_ALLOW_COSTS -ne "1") {
-  Write-Log "Real agent runs are blocked because OPENCODE_ALLOW_COSTS is not set to 1."
-  exit 0
+$ollamaExe = "C:\Users\Gebruiker\AppData\Local\Programs\Ollama\ollama.exe"
+
+if (-not (Test-Path $ollamaExe)) {
+  Write-Log "Ollama is not installed. Install the local runtime before starting the autonomous workflow."
+  exit 1
+}
+
+try {
+  & $ollamaExe list | Out-Null
+} catch {
+  Write-Log "Ollama is installed but not responding. Start Ollama and pull the configured model first."
+  exit 1
 }
 
 $endTime = (Get-Date).Date.AddHours(22)
@@ -106,6 +116,33 @@ Stop if the local time is after 22:00.
 "@
 
     Invoke-Agent -Agent "reviewer" -Prompt $reviewerRecheckPrompt
+  }
+}
+
+if (Test-Path $reviewFile) {
+  $finalReview = Get-Content $reviewFile -Raw
+
+  if ($finalReview -match "APPROVED") {
+    Write-Log "Review approved. Preparing commit and push."
+
+    $branchStatus = git status --short
+
+    if ($branchStatus) {
+      git add .
+      $commitMessage = "Autonomous delivery for issue #$issueNumber"
+      $env:GIT_AUTHOR_NAME = "Kim Zeevaarders"
+      $env:GIT_AUTHOR_EMAIL = "kimzeevaarders@gmail.com"
+      $env:GIT_COMMITTER_NAME = "Kim Zeevaarders"
+      $env:GIT_COMMITTER_EMAIL = "kimzeevaarders@gmail.com"
+      git commit -m $commitMessage | Tee-Object -FilePath $logPath -Append
+      git push origin main | Tee-Object -FilePath $logPath -Append
+      Add-Content -Path $deployFile -Value "Pushed issue #$issueNumber to main for production deployment."
+      Write-Log "Changes pushed to main. Vercel should deploy production automatically."
+    } else {
+      Write-Log "Nothing changed after review approval, so no commit or push was needed."
+    }
+  } else {
+    Write-Log "Review did not end in APPROVED. Skipping commit and deploy."
   }
 }
 

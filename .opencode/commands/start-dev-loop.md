@@ -2,13 +2,17 @@
 description: Start the autonomous product-owner -> developer -> reviewer loop for this project
 agent: build
 ---
-Start the repository's manual development loop now.
+Start the repository's development loop now using the local Ollama model configured in `opencode.json`.
 
-Steps:
-1. Explain whether the run will be a real autonomous run or a safe no-cost dry run based on the current environment variables.
-2. Run `powershell -ExecutionPolicy Bypass -File scripts/start-dev-loop.ps1`.
-3. Summarize what started, where logs/runtime files are stored, and whether real agent work was blocked by the cost-safety guard.
+Workflow:
+1. Ask the `product-owner` agent to propose one high-value improvement for beginners and create a GitHub issue for it.
+2. Ask the `developer` agent to implement that issue in the repository.
+3. Ask the `reviewer` agent to review the implementation.
+4. If the reviewer requests changes, send the feedback back to the `developer` agent and repeat once more.
+5. If the reviewer approves, commit the changes, push `main`, and verify that Vercel starts a production deployment.
+6. Summarize the issue number, files changed, review result, commit SHA, and deploy status.
 
 Important:
-- Do not claim that real autonomous work happened if the script exited because cost safety is still enabled.
-- Mention `.opencode/runtime/logs/` and the latest issue/review handoff files if they were created.
+- Use the project-local Ollama model path and do not switch to a paid provider.
+- Keep the improvement aligned with the site's purpose: helping beginners learn OpenCode, coding, Next.js, GitHub, and Vercel.
+- Do not stop after issue creation; continue until the issue is either in production or blocked by a concrete error.

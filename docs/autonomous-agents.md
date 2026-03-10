@@ -32,24 +32,19 @@ This repository now includes a staged multi-agent workflow for continued site im
 
 ## Cost Safety
 
-The script is safe by default.
+This workflow is now configured for a local no-cost model path through Ollama.
 
-It exits without starting real agent work unless both of these environment variables are set:
-
-- `OPENCODE_AUTONOMOUS_ENABLED=1`
-- `OPENCODE_ALLOW_COSTS=1`
-
-This is intentional because the current OpenCode setup on this machine uses an authenticated `OpenAI` provider, which can incur model usage costs during autonomous runs.
+See `docs/ollama-setup.md` for the exact installation and model configuration.
 
 ## Current Scheduling Target
 
-The workflow is designed for a window that starts at `21:25` and stops agent work by `22:00`.
+The scheduled run was removed. The recommended path is now manual start on demand with `/start-dev-loop`.
 
 ## Start It Manually
 
 You can start the loop on demand in two ways.
 
-### In OpenCode
+### In OpenCode (recommended)
 
 Run:
 
@@ -57,9 +52,9 @@ Run:
 /start-dev-loop
 ```
 
-This uses the project command in `.opencode/commands/start-dev-loop.md`.
+This uses the project command in `.opencode/commands/start-dev-loop.md` and runs the product-owner -> developer -> reviewer loop directly inside OpenCode.
 
-### In PowerShell
+### In PowerShell (script path)
 
 Run:
 
@@ -69,19 +64,10 @@ powershell -ExecutionPolicy Bypass -File scripts/start-dev-loop.ps1
 
 ## What Happens On Manual Start
 
-1. The product-owner agent proposes a new improvement and tries to create a GitHub issue.
+1. The product-owner agent proposes a new improvement and creates a GitHub issue.
 2. The developer agent implements the issue.
 3. The reviewer agent either approves the work or requests changes.
 4. If changes are requested and time remains, the developer and reviewer get one more pass.
-5. Runtime files are written under `.opencode/runtime/`.
-
-## Important Reality Check
-
-The current machine does not yet have a no-cost local OpenCode model runtime configured.
-
-That means:
-
-- the workflow structure is ready
-- the scheduler is ready
-- the manual command is ready
-- but real autonomous work is still blocked by the no-cost safety guard unless you explicitly allow provider-backed runs
+5. If the review ends in `APPROVED`, the script commits and pushes `main`.
+6. Vercel then deploys production from GitHub.
+7. Runtime files are written under `.opencode/runtime/`.

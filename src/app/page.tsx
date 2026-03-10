@@ -94,7 +94,7 @@ export default function Home() {
               <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em]">Future features now go through three OpenCode agents.</h2>
             </div>
             <p className="max-w-2xl text-sm leading-6 text-slate-600">
-              New requirements should be clarified first, implemented second, and reviewed last so the site can keep evolving without losing product clarity or release discipline.
+              New requirements should be clarified first, implemented second, and reviewed last so the site can keep evolving without losing product clarity or release discipline. The command path is now designed to run on a free local Ollama coding model instead of a paid remote provider.
             </p>
           </div>
 
@@ -114,6 +114,9 @@ export default function Home() {
             </Link>
             <a className="rounded-full bg-slate-900 px-4 py-2 text-white hover:bg-slate-700" href="https://github.com/kimzeevaarders-gmail/opencode-nextjs-vercel-journey/blob/main/docs/opencode-skills.md" target="_blank" rel="noreferrer">
               Read skill docs
+            </a>
+            <a className="rounded-full border border-black/10 px-4 py-2 hover:bg-black/5" href="https://github.com/kimzeevaarders-gmail/opencode-nextjs-vercel-journey/blob/main/docs/ollama-setup.md" target="_blank" rel="noreferrer">
+              Read Ollama setup
             </a>
           </div>
         </section>

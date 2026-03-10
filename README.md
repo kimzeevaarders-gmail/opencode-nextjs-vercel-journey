@@ -54,6 +54,7 @@ The production deployment currently lives on the free Vercel subdomain `opencode
 - cost notes: `docs/costs.md`
 - OpenCode skills: `docs/opencode-skills.md`
 - autonomous workflow: `docs/autonomous-agents.md`
+- Ollama setup: `docs/ollama-setup.md`
 
 Manual OpenCode command:
 
