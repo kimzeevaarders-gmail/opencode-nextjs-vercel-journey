@@ -66,7 +66,7 @@ For a safe rehearsal that skips commit, push, issue closure, and production depl
 /start-dev-loop dry-run
 ```
 
-This uses the project command in `.opencode/commands/start-dev-loop.md` and runs the product-owner -> developer -> reviewer loop directly inside OpenCode.
+This uses the project command in `.opencode/commands/start-dev-loop.md` and runs the product-owner -> developer -> reviewer loop directly inside OpenCode, so the subagents stay visible in the session UI.
 
 ### In PowerShell (script path)
 
@@ -75,6 +75,8 @@ Run:
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts/start-dev-loop.ps1
 ```
+
+The script now attaches to the local OpenCode server and triggers the same `/start-dev-loop` command, so the subagents remain visible there too.
 
 ## What Happens On Manual Start
 

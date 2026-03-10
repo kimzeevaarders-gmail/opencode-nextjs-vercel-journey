@@ -22,6 +22,7 @@ Use this after implementation is complete and before calling the task done.
 
 - Compare the final changes to the original request or acceptance criteria.
 - Inspect the exact files that changed instead of reviewing the whole project blindly.
+- Check for other open pull requests when that broader review context matters to the current ship decision.
 - Prefer concise, actionable findings.
 - Note any reusable process improvement that should feed back into the local skills or agent instructions.
 - Auto-learn from recurring review findings by tightening the relevant local skills or agent instructions when that would prevent the same issue next time.

@@ -14,10 +14,11 @@ Workflow:
 3. Ask the `developer` agent to implement the chosen issue in the repository.
 4. If the `developer` agent has clarification questions, send them to the `product-owner` agent, return the answers to the `developer`, and repeat until implementation can continue without blocking questions.
 5. Ask the `reviewer` agent to review the implementation.
-6. If the reviewer requests changes, send the feedback back to the `developer` agent, then re-run the `reviewer` agent until the work is approved or concretely blocked.
-7. As product-owner, developer, and reviewer learn useful reusable lessons, update the relevant local skill or agent files during the loop so the workflow keeps improving.
-8. If the reviewer approves, commit the changes, push `main`, post the reviewer approval note to the GitHub issue, close the issue, and verify that Vercel starts a production deployment.
-9. Summarize the issue number, files changed, review result, commit SHA, issue-close status, deploy status, and any skill-file improvements captured during the run.
+6. Have the reviewer also inspect any other open pull requests when they are relevant to the current release state.
+7. If the reviewer requests changes, send the feedback back to the `developer` agent, then re-run the `reviewer` agent until the work is approved or concretely blocked.
+8. As product-owner, developer, and reviewer learn useful reusable lessons, update the relevant local skill or agent files during the loop so the workflow keeps improving.
+9. If the reviewer approves, commit the changes, push `main`, post the reviewer approval note to the GitHub issue, close the issue, and verify that Vercel starts a production deployment.
+10. Summarize the issue number, files changed, review result, commit SHA, issue-close status, deploy status, and any skill-file improvements captured during the run.
 
 Important:
 - Use the project's configured Codex runtime.
