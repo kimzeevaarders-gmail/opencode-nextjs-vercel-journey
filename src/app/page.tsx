@@ -1,11 +1,12 @@
 import Link from "next/link";
 import { SiteShell } from "@/components/site-shell";
-import { deploymentTimeline, guideSections, journeySteps, launchChecklist, siteConfig } from "@/lib/site";
+import { deploymentTimeline, guideSections, journeySteps, launchChecklist, multiAgentWorkflow, siteConfig } from "@/lib/site";
 
 const checkpoints = [
   "Use current Node.js LTS and the latest stable Next.js + React.",
   "Keep the main deployment path on Vercel for the lowest operational friction.",
   "Document the repo, the prompts, and the exact deployment commands together.",
+  "Drive future work through a planner, implementer, and reviewer agent path.",
   "Verify the production URL, sitemap, robots, and responsive layout after launch.",
 ];
 
@@ -44,7 +45,7 @@ export default function Home() {
               Build a server-rendered Next.js site and publish the full journey so others can follow it.
             </h1>
             <p className="max-w-2xl text-base leading-8 text-slate-700 sm:text-xl">
-              This project is the working blueprint: latest React, latest Next.js, TypeScript, GitHub, Vercel, a live production deployment at `opencodejourney.vercel.app`, custom domain guidance, cost notes, and an optional AWS path.
+              This project is the working blueprint: latest React, latest Next.js, TypeScript, GitHub, Vercel, a live production deployment at `opencodejourney.vercel.app`, custom domain guidance, cost notes, an optional AWS path, and a new multi-agent OpenCode workflow for future development.
             </p>
           </div>
 
@@ -84,6 +85,37 @@ export default function Home() {
               ))}
             </div>
           </article>
+        </section>
+
+        <section className="rounded-[2rem] border border-black/10 bg-white/80 p-8 shadow-[0_20px_50px_rgba(15,23,42,0.06)]">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <p className="text-sm uppercase tracking-[0.28em] text-slate-500">New development path</p>
+              <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em]">Future features now go through three OpenCode agents.</h2>
+            </div>
+            <p className="max-w-2xl text-sm leading-6 text-slate-600">
+              New requirements should be clarified first, implemented second, and reviewed last so the site can keep evolving without losing product clarity or release discipline.
+            </p>
+          </div>
+
+          <div className="mt-6 grid gap-4 md:grid-cols-3">
+            {multiAgentWorkflow.map((item) => (
+              <article key={item.skill} className="rounded-[1.7rem] border border-black/8 bg-[#e6efe7] px-5 py-5">
+                <p className="text-xs font-medium uppercase tracking-[0.32em] text-slate-500">{item.skill}</p>
+                <h3 className="mt-3 text-xl font-semibold tracking-[-0.02em] text-slate-900">{item.title}</h3>
+                <p className="mt-3 text-sm leading-6 text-slate-700">{item.detail}</p>
+              </article>
+            ))}
+          </div>
+
+          <div className="mt-6 flex flex-wrap gap-3 text-sm font-medium">
+            <Link className="rounded-full border border-black/10 px-4 py-2 hover:bg-black/5" href="/guide/opencode-workflow">
+              Open workflow section
+            </Link>
+            <a className="rounded-full bg-slate-900 px-4 py-2 text-white hover:bg-slate-700" href="https://github.com/kimzeevaarders-gmail/opencode-nextjs-vercel-journey/blob/main/docs/opencode-skills.md" target="_blank" rel="noreferrer">
+              Read skill docs
+            </a>
+          </div>
         </section>
 
         <section className="rounded-[2rem] border border-black/10 bg-white/70 p-6 shadow-[0_20px_50px_rgba(15,23,42,0.06)] backdrop-blur sm:p-8">
@@ -137,7 +169,7 @@ export default function Home() {
             <p className="text-sm uppercase tracking-[0.3em] text-slate-500">What changed most recently</p>
             <h2 className="mt-4 text-3xl font-semibold tracking-[-0.03em]">The repo, deployment, and verification trail now exist.</h2>
             <p className="mt-4 max-w-xl text-base leading-7 text-slate-700">
-              The implementation plan is saved in the repository, the app is live on Vercel, and the site content now reflects the real prompts, tasks, environment setup, GitHub connection work, and deployment verification used to get here.
+              The implementation plan is saved in the repository, the app is live on Vercel, and the site content now reflects the real prompts, tasks, environment setup, GitHub connection work, deployment verification, and the new multi-agent development path used to continue the site.
             </p>
           </div>
           <div className="grid gap-4">

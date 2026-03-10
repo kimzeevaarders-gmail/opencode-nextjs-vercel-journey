@@ -176,7 +176,7 @@ export const guideSections: GuideSection[] = [
     intro:
       "The project is not only about a final website. It is also about showing a repeatable human-and-agent workflow that other builders can reuse on their own projects.",
     summary:
-      "Use OpenCode to explore the repository, make focused edits, save docs, run verification commands, and keep the tutorial aligned with the real state of the app.",
+      "Use OpenCode to explore the repository, make focused edits, save docs, run verification commands, and keep the tutorial aligned with the real state of the app. The current direction now uses a three-agent path for requirements, implementation, and review.",
     whyItMatters:
       "Readers learn faster when the prompts match reality. OpenCode becomes most useful when it updates the actual repo and verifies the actual build instead of generating disconnected snippets.",
     checklist: [
@@ -184,6 +184,7 @@ export const guideSections: GuideSection[] = [
       "Ask for docs and code updates in the same workflow when the change affects both.",
       "Run lint and build after meaningful edits.",
       "Use OpenCode to explain tradeoffs, not just produce code.",
+      "Route new work through the requirements-thinker, feature-implementer, and change-reviewer skills.",
     ],
     steps: [
       {
@@ -206,6 +207,11 @@ export const guideSections: GuideSection[] = [
         detail:
           "OpenCode is especially useful for metadata, routing, deployment checks, domain instructions, and identifying missing production details before shipping.",
       },
+      {
+        title: "Split future work across three skills",
+        detail:
+          "Use `requirements-thinker` to clarify the ask, `feature-implementer` to build it, and `change-reviewer` to check correctness before calling the task done.",
+      },
     ],
     deliverables: [
       "A site whose content matches the real repository.",
@@ -224,8 +230,9 @@ export const guideSections: GuideSection[] = [
       ],
       tasks: [
         "Read the existing repo structure and docs before editing.",
+        "Turn rough requests into reviewed requirements before starting implementation.",
         "Make code and content changes in the same pass when both are affected.",
-        "Run verification commands after meaningful edits and record what still needs work.",
+        "Run verification commands after meaningful edits and finish with a review pass.",
       ],
     },
     prompt:
@@ -720,5 +727,23 @@ export const deploymentTimeline = [
   {
     title: "Launch verify",
     detail: "Open `opencodejourney.vercel.app`, confirm HTTPS, metadata, sitemap, robots, mobile layout, and the future preview workflow.",
+  },
+];
+
+export const multiAgentWorkflow = [
+  {
+    skill: "requirements-thinker",
+    title: "Clarify the request",
+    detail: "Turn a rough ask into requirements, assumptions, risks, and acceptance criteria before code changes start.",
+  },
+  {
+    skill: "feature-implementer",
+    title: "Build the approved work",
+    detail: "Implement the feature in small verified steps that match the repo structure and the accepted requirements.",
+  },
+  {
+    skill: "change-reviewer",
+    title: "Review before shipping",
+    detail: "Compare the final changes against the request, look for gaps or regressions, and give a ship recommendation.",
   },
 ];

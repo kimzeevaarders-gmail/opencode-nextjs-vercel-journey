@@ -52,6 +52,8 @@ The production deployment currently lives on the free Vercel subdomain `opencode
 - Vercel deployment: `docs/deployment-vercel.md`
 - AWS alternative: `docs/deployment-aws.md`
 - cost notes: `docs/costs.md`
+- OpenCode skills: `docs/opencode-skills.md`
+- autonomous workflow: `docs/autonomous-agents.md`
 
 ## Repository
 
