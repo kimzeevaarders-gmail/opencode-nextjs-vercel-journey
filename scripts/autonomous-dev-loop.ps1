@@ -35,7 +35,25 @@ function Invoke-Agent {
 
   $command = "npx opencode-ai run --agent $Agent --format default --title `"autonomous-$Agent`" `"$Prompt`""
   Write-Log "Running $Agent"
-  cmd /c $command 2>&1 | Tee-Object -FilePath $logPath -Append
+
+  $stdoutPath = Join-Path $logDir ("agent-" + $Agent + "-stdout-" + (Get-Date -Format "yyyyMMdd-HHmmssfff") + ".log")
+  $stderrPath = Join-Path $logDir ("agent-" + $Agent + "-stderr-" + (Get-Date -Format "yyyyMMdd-HHmmssfff") + ".log")
+
+  $process = Start-Process -FilePath "cmd.exe" -ArgumentList "/c", $command -Wait -NoNewWindow -PassThru -RedirectStandardOutput $stdoutPath -RedirectStandardError $stderrPath
+
+  if (Test-Path $stdoutPath) {
+    Get-Content $stdoutPath | Tee-Object -FilePath $logPath -Append
+    Remove-Item $stdoutPath -Force
+  }
+
+  if (Test-Path $stderrPath) {
+    Get-Content $stderrPath | Tee-Object -FilePath $logPath -Append
+    Remove-Item $stderrPath -Force
+  }
+
+  if ($process.ExitCode -ne 0) {
+    throw "Agent $Agent failed with exit code $($process.ExitCode)"
+  }
 }
 
 function Get-OpenIssueNumber {
