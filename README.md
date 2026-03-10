@@ -55,6 +55,10 @@ The production deployment currently lives on the free Vercel subdomain `opencode
 - OpenCode skills: `docs/opencode-skills.md`
 - autonomous workflow: `docs/autonomous-agents.md`
 
+Manual OpenCode command:
+
+- `/start-dev-loop` starts the repository's autonomous dev-loop wrapper
+
 ## Repository
 
 GitHub: `https://github.com/kimzeevaarders-gmail/opencode-nextjs-vercel-journey`

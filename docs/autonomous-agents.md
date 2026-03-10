@@ -19,7 +19,9 @@ This repository now includes a staged multi-agent workflow for continued site im
 - `.opencode/agents/product-owner.md`
 - `.opencode/agents/developer.md`
 - `.opencode/agents/reviewer.md`
+- `.opencode/commands/start-dev-loop.md`
 - `scripts/nightly-agent-loop.ps1`
+- `scripts/start-dev-loop.ps1`
 
 ## Runtime Flow
 
@@ -41,4 +43,45 @@ This is intentional because the current OpenCode setup on this machine uses an a
 
 ## Current Scheduling Target
 
-The workflow is designed for a window that starts at `21:15` and stops agent work by `22:00`.
+The workflow is designed for a window that starts at `21:25` and stops agent work by `22:00`.
+
+## Start It Manually
+
+You can start the loop on demand in two ways.
+
+### In OpenCode
+
+Run:
+
+```text
+/start-dev-loop
+```
+
+This uses the project command in `.opencode/commands/start-dev-loop.md`.
+
+### In PowerShell
+
+Run:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/start-dev-loop.ps1
+```
+
+## What Happens On Manual Start
+
+1. The product-owner agent proposes a new improvement and tries to create a GitHub issue.
+2. The developer agent implements the issue.
+3. The reviewer agent either approves the work or requests changes.
+4. If changes are requested and time remains, the developer and reviewer get one more pass.
+5. Runtime files are written under `.opencode/runtime/`.
+
+## Important Reality Check
+
+The current machine does not yet have a no-cost local OpenCode model runtime configured.
+
+That means:
+
+- the workflow structure is ready
+- the scheduler is ready
+- the manual command is ready
+- but real autonomous work is still blocked by the no-cost safety guard unless you explicitly allow provider-backed runs

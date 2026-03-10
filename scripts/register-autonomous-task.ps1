@@ -1,6 +1,6 @@
 $taskName = "OpenCode Multi-Agent Tonight"
 $scriptPath = "C:\Users\Gebruiker\Documents\opencode-nextjs-vercel-journey\scripts\nightly-agent-loop.cmd"
-$startTime = [datetime]::Today.AddHours(21).AddMinutes(15)
+$startTime = [datetime]::Today.AddHours(21).AddMinutes(25)
 
 if ((Get-Date) -gt $startTime) {
   $startTime = $startTime.AddDays(1)
