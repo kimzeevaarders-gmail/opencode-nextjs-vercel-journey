@@ -86,6 +86,38 @@ export default async function GuidePage({ params }: GuidePageProps) {
             </section>
 
             <section className="grid gap-6">
+              <article className="rounded-[2rem] border border-black/10 bg-white/80 p-6 sm:p-8">
+                <h2 className="text-2xl font-semibold tracking-[-0.03em]">Prompts and Tasks</h2>
+                <div className="mt-5 grid gap-6 lg:grid-cols-2">
+                  <div>
+                    <p className="text-sm uppercase tracking-[0.24em] text-slate-500">Prompts to use</p>
+                    <div className="mt-4 grid gap-3">
+                      {section.executionGuide.prompts.map((item) => (
+                        <div
+                          key={item}
+                          className="rounded-2xl border border-black/10 bg-[#e6efe7] px-4 py-4 text-sm leading-6 text-slate-800 sm:px-5"
+                        >
+                          {item}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-sm uppercase tracking-[0.24em] text-slate-500">Tasks to execute</p>
+                    <div className="mt-4 grid gap-3">
+                      {section.executionGuide.tasks.map((item) => (
+                        <div
+                          key={item}
+                          className="rounded-2xl border border-black/8 bg-[#f7f2e7] px-4 py-4 text-sm leading-6 text-slate-700 sm:px-5"
+                        >
+                          {item}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </article>
+
               {section.commands ? (
                 <article className="rounded-[2rem] border border-black/10 bg-white/80 p-6 sm:p-8">
                   <h2 className="text-2xl font-semibold tracking-[-0.03em]">Commands</h2>
