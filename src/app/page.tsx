@@ -11,6 +11,7 @@ const checkpoints = [
 ];
 
 const sliderSteps = [...journeySteps, ...journeySteps];
+const featuredGuides = guideSections.filter((section, index) => index < 6 || section.slug === "troubleshooting");
 
 export default function Home() {
   return (
@@ -181,7 +182,7 @@ export default function Home() {
         </section>
 
         <section className="grid gap-6 lg:grid-cols-2">
-          {guideSections.slice(0, 6).map((section) => (
+          {featuredGuides.map((section) => (
             <article key={section.slug} className="rounded-[2rem] border border-black/10 bg-white/80 p-6 shadow-[0_20px_50px_rgba(15,23,42,0.06)]">
               <p className="text-sm uppercase tracking-[0.28em] text-slate-500">{section.shortTitle}</p>
               <h2 className="mt-4 text-2xl font-semibold tracking-[-0.03em]">{section.title}</h2>

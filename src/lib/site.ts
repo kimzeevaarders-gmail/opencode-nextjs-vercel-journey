@@ -263,6 +263,81 @@ export const guideSections: GuideSection[] = [
       "Explain the exact autonomous dev loop for this repository in beginner-friendly language. Show how `/start-dev-loop` and `scripts/start-dev-loop.ps1` feed into `scripts/autonomous-dev-loop.ps1`, how Codex runs product-owner -> developer -> reviewer, how `requirements-thinker`, `feature-implementer`, and `change-reviewer` map to those roles, which files are written under `.opencode/runtime/`, and why commit, push, and deploy only happen after `APPROVED`.",
   },
   {
+    slug: "troubleshooting",
+    shortTitle: "Troubleshooting",
+    title: "Unblock the most common setup, import, and dev-loop failures without guessing.",
+    intro:
+      "Every beginner eventually hits a blocking error. This troubleshooting chapter turns the scariest ones—Node version mismatch, GitHub CLI auth failures, Vercel refusing to import, or missing env/runtime files—into a short diagnosis and fix recipe.",
+    summary:
+      "Use clear symptoms to identify the issue, confirm the suspicion with a quick command, and apply the exact fix so you can keep building or rerunning the autonomous dev loop without restarting from scratch.",
+    whyItMatters:
+      "The fastest project is the one that keeps moving. If you can map an error message to the right `node`, `gh`, `vercel`, or OpenCode command, you avoid the spiral of reinstalling everything and instead repair only what broke.",
+    checklist: [
+      "Run `node -v` at the start of a session and switch to the current LTS with `nvm use --lts` if the version is off.",
+      "Verify GitHub CLI access with `gh auth status` so pulls, pushes, and the autonomous script can talk to GitHub.",
+      "Before importing to Vercel, confirm `vercel whoami` succeeds and re-link the repo with `vercel link` if it does not.",
+      "When lint, build, or the dev loop fail, double-check that `NEXT_PUBLIC_SITE_URL` is set and that `.opencode/runtime/` exists with the expected files.",
+    ],
+    steps: [
+      {
+        title: "Node LTS mismatch",
+        detail:
+          "Symptom: `npm run lint` or `npm run build` throw engine or syntax errors even though the code is untouched. Likely cause: the machine upgraded or downgraded Node. Fix: run `node -v` to see the active version, then `nvm use --lts` (or install nvm if missing) and reinstall dependencies before rerunning lint/build.",
+      },
+      {
+        title: "GitHub CLI authentication problems",
+        detail:
+          "Symptom: `gh` commands in the dev loop prompt for login or fail with HTTP 401. Likely cause: tokens expired or the CLI was never linked. Fix: run `gh auth status` to confirm, then `gh auth login` (use HTTPS + device code) so the autonomous script can create issues, list pull requests, and push.",
+      },
+      {
+        title: "Vercel import fails because GitHub is not linked",
+        detail:
+          "Symptom: the Vercel dashboard cannot find the repository or shows `Missing GitHub connection`. Likely cause: you are not logged into the same account inside the CLI or dashboard. Fix: run `vercel whoami` to confirm the signed-in account, then `vercel link` from the repo root (or add the GitHub integration in the dashboard) so imports and redeploys work.",
+      },
+      {
+        title: "Missing env or runtime files",
+        detail:
+          "Symptom: `npm run lint`, `npm run build`, or `/start-dev-loop dry-run` fail with `NEXT_PUBLIC_SITE_URL` undefined errors or `.opencode/runtime/...` file not found. Likely cause: env vars were never added to `.env.local`/Vercel, or `.opencode/runtime/` was deleted. Fix: add `NEXT_PUBLIC_SITE_URL` locally and in Vercel project settings, recreate `.opencode/runtime/` with the placeholder files (especially `latest-issue.txt`), and rerun lint, build, and the dry-run to repopulate the state.",
+      },
+    ],
+    deliverables: [
+      "A quick-reference diagnosis for Node, GitHub CLI, Vercel, and autonomous runtime errors.",
+      "Documented steps for switching Node LTS, relogging CLI tools, and recreating missing files.",
+      "Confidence that lint, build, and `/start-dev-loop dry-run` all complete without hidden blockers.",
+    ],
+    pitfalls: [
+      "Ignoring version output from `node -v` after switching machines.",
+      "Assuming `gh auth status` works forever and skipping `gh auth login` when tokens expire.",
+      "Trying to import into Vercel without confirming `vercel whoami` or linking the repo first.",
+      "Letting `.opencode/runtime/` or `NEXT_PUBLIC_SITE_URL` disappear and hoping lint/build won’t notice.",
+    ],
+    executionGuide: {
+      prompts: [
+        "Act as the on-call engineer for this guide site and walk through the Node, GitHub CLI, Vercel import, and env/runtime failure cases.",
+        "For each symptom, explain how to confirm the root cause with the provided commands and how to fix it without reinstalling the whole stack.",
+      ],
+      tasks: [
+        "Show how to detect and fix a Node mismatch with `node -v` and `nvm use --lts` before rerunning lint/build.",
+        "Re-authenticate GitHub CLI using `gh auth status` and `gh auth login` so the dev loop can reach GitHub APIs again.",
+        "Repair the Vercel link with `vercel whoami` and `vercel link` whenever imports fail.",
+        "Restore `NEXT_PUBLIC_SITE_URL`, rerun `npm run lint`, `npm run build`, and `/start-dev-loop dry-run`, and recreate `.opencode/runtime/` files when they go missing.",
+      ],
+    },
+    commands: [
+      "node -v",
+      "nvm use --lts",
+      "gh auth status",
+      "gh auth login",
+      "vercel whoami",
+      "vercel link",
+      "npm run lint",
+      "npm run build",
+      "/start-dev-loop dry-run",
+    ],
+    prompt:
+      "Diagnose the listed Node, GitHub CLI, Vercel, and env/runtime failures. Reference `node -v`, `nvm use --lts`, `gh auth status`, `gh auth login`, `vercel whoami`, `vercel link`, `npm run lint`, `npm run build`, and `/start-dev-loop dry-run`, and explain how a beginner should fix each issue without wiping the repo.",
+  },
+  {
     slug: "project-setup",
     shortTitle: "Project Setup",
     title: "Use a current, production-friendly Next.js stack without unnecessary complexity.",
