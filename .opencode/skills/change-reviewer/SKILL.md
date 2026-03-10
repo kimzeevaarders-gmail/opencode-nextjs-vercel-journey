@@ -23,7 +23,9 @@ Use this after implementation is complete and before calling the task done.
 - Compare the final changes to the original request or acceptance criteria.
 - Inspect the exact files that changed instead of reviewing the whole project blindly.
 - Prefer concise, actionable findings.
+- Note any reusable process improvement that should feed back into the local skills or agent instructions.
 - If no issues are found, say that clearly and mention what was checked.
+- If fixes arrive after a requested-change review, re-review the updated work until it is approved or clearly blocked.
 
 ## Expected output
 

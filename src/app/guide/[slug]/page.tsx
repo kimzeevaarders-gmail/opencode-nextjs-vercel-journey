@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SiteShell } from "@/components/site-shell";
-import { guideSections } from "@/lib/site";
+import { guideSections, loopModeCards } from "@/lib/site";
 
 type GuidePageProps = {
   params: Promise<{
@@ -35,6 +35,8 @@ export default async function GuidePage({ params }: GuidePageProps) {
   if (!section) {
     notFound();
   }
+
+  const isOpenCodeWorkflow = section.slug === "opencode-workflow";
 
   return (
     <SiteShell>
@@ -180,6 +182,40 @@ export default async function GuidePage({ params }: GuidePageProps) {
               </article>
             </section>
           </div>
+
+          {isOpenCodeWorkflow ? (
+            <section className="rounded-[2rem] border border-black/10 bg-white/80 p-6 shadow-[0_20px_60px_rgba(15,23,42,0.07)] sm:p-8">
+              <div className="flex flex-wrap items-end justify-between gap-4">
+                <div>
+                  <p className="text-sm uppercase tracking-[0.28em] text-slate-500">Live vs dry-run</p>
+                  <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em]">Choose the safer rehearsal before you choose shipping.</h2>
+                </div>
+                <p className="max-w-2xl text-sm leading-6 text-slate-600">
+                  Both modes still run the product-owner, developer, and reviewer sequence and write the same shared runtime trail. The difference is whether approval is allowed to ship the result.
+                </p>
+              </div>
+
+              <div className="mt-6 grid gap-4 lg:grid-cols-2">
+                {loopModeCards.map((item, index) => (
+                  <article
+                    key={item.command}
+                    className={`rounded-[1.6rem] border border-black/8 p-5 ${index === 0 ? "bg-[#e6efe7]" : "bg-[#f7f2e7]"}`}
+                  >
+                    <p className="text-xs font-medium uppercase tracking-[0.28em] text-slate-500">{item.title}</p>
+                    <h3 className="mt-3 text-2xl font-semibold tracking-[-0.02em] text-slate-900">`{item.command}`</h3>
+                    <p className="mt-3 text-sm leading-6 text-slate-700">{item.detail}</p>
+                    <div className="mt-4 grid gap-3 text-sm leading-6 text-slate-700">
+                      {item.outcomes.map((outcome) => (
+                        <div key={outcome} className="rounded-2xl border border-black/8 bg-white/70 px-4 py-3">
+                          {outcome}
+                        </div>
+                      ))}
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </section>
+          ) : null}
         </div>
       </main>
     </SiteShell>

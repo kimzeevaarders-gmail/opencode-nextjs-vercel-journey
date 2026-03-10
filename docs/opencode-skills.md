@@ -26,4 +26,8 @@ These skills now support a broader multi-agent workflow with a product-owner age
 
 - These are project-local skills, so OpenCode can discover them from this repository.
 - The skill names match the directory names, which is required by OpenCode skill discovery.
+- `requirements-thinker` now checks for existing open GitHub issues before proposing a new one.
+- `feature-implementer` now prefers an existing open GitHub ticket before a newly created issue from the same dev loop.
+- `change-reviewer` now feeds useful process improvements back into the local workflow instructions.
+- The workflow now keeps product-owner clarification loops and reviewer re-review loops running until there are no blocking questions or findings left.
 - The matching project agents live in `.opencode/agents/` and are documented in `docs/autonomous-agents.md`.

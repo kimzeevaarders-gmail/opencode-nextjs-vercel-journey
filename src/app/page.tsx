@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { SiteShell } from "@/components/site-shell";
-import { deploymentTimeline, guideSections, journeySteps, launchChecklist, multiAgentWorkflow, siteConfig } from "@/lib/site";
+import { deploymentTimeline, guideSections, journeySteps, launchChecklist, loopModeCards, multiAgentWorkflow, siteConfig } from "@/lib/site";
 
 const checkpoints = [
   "Use current Node.js LTS and the latest stable Next.js + React.",
@@ -115,6 +115,38 @@ export default function Home() {
             <a className="rounded-full bg-slate-900 px-4 py-2 text-white hover:bg-slate-700" href="https://github.com/kimzeevaarders-gmail/opencode-nextjs-vercel-journey/blob/main/docs/opencode-skills.md" target="_blank" rel="noreferrer">
               Read skill docs
             </a>
+          </div>
+        </section>
+
+        <section className="rounded-[2rem] border border-black/10 bg-white/80 p-8 shadow-[0_20px_50px_rgba(15,23,42,0.06)]">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <p className="text-sm uppercase tracking-[0.28em] text-slate-500">Live vs dry-run</p>
+              <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em]">Rehearse the dev loop before you let it ship.</h2>
+            </div>
+            <p className="max-w-2xl text-sm leading-6 text-slate-600">
+              Both commands still write the runtime trail under `.opencode/runtime/`. The practical difference is whether an approved run is allowed to commit, push, and trigger production.
+            </p>
+          </div>
+
+          <div className="mt-6 grid gap-4 lg:grid-cols-2">
+            {loopModeCards.map((item, index) => (
+              <article
+                key={item.command}
+                className={`rounded-[1.7rem] border border-black/8 p-5 ${index === 0 ? "bg-[#e6efe7]" : "bg-[#f7f2e7]"}`}
+              >
+                <p className="text-xs font-medium uppercase tracking-[0.3em] text-slate-500">{item.tone}</p>
+                <h3 className="mt-3 text-2xl font-semibold tracking-[-0.02em] text-slate-900">`{item.command}`</h3>
+                <p className="mt-3 text-sm leading-6 text-slate-700">{item.detail}</p>
+                <div className="mt-4 grid gap-3 text-sm leading-6 text-slate-700">
+                  {item.outcomes.map((outcome) => (
+                    <div key={outcome} className="rounded-2xl border border-black/8 bg-white/70 px-4 py-3">
+                      {outcome}
+                    </div>
+                  ))}
+                </div>
+              </article>
+            ))}
           </div>
         </section>
 

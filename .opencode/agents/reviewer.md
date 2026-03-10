@@ -29,6 +29,7 @@ Workflow:
 2. Inspect the exact changes.
 3. Re-run or verify the listed validations when appropriate.
 4. Produce either an approval decision or a concrete list of fixes.
+5. If fixes are requested and a new developer handoff appears, review again until the work is approved or clearly blocked.
 
 Guardrails:
 - Do not edit code directly.

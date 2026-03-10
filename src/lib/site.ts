@@ -182,36 +182,43 @@ export const guideSections: GuideSection[] = [
     checklist: [
       "Make sure `opencode.json` is configured for the Codex runtime that should execute the loop.",
       "Start the run from this repository with `/start-dev-loop`, or use `/start-dev-loop dry-run` if you want to skip shipping.",
+      "Use dry-run first when you want to verify issue creation, implementation, review, and runtime files without touching production.",
+      "Use the live command only when you are comfortable letting an approved run commit, push, and trigger Vercel.",
       "Expect the runtime flow to hand off product-owner -> developer -> reviewer inside `scripts/autonomous-dev-loop.ps1`.",
       "Know the skill mapping before you run it: `requirements-thinker` -> product-owner, `feature-implementer` -> developer, `change-reviewer` -> reviewer.",
-      "Inspect `.opencode/runtime/latest-issue.txt`, `.opencode/runtime/developer-handoff.md`, `.opencode/runtime/latest-review.md`, `.opencode/runtime/latest-deploy.txt`, and `.opencode/runtime/logs/` to understand the last run.",
+      "Inspect `.opencode/runtime/latest-issue.txt`, `.opencode/runtime/developer-handoff.md`, `.opencode/runtime/product-owner-answers.md`, `.opencode/runtime/latest-review.md`, `.opencode/runtime/latest-deploy.txt`, and `.opencode/runtime/logs/` to understand the last run.",
       "Remember that commit, push, and deploy happen only after the review file ends in `APPROVED`.",
     ],
     steps: [
       {
         title: "Start the wrapper from the repo root",
         detail:
-          "Run `/start-dev-loop` in OpenCode or execute `scripts/start-dev-loop.ps1` directly. That entry point sets up the autonomous environment, including `OPENCODE_AUTONOMOUS_ENABLED=1`, and then calls `scripts/autonomous-dev-loop.ps1`, which owns the real runtime flow.",
+          "Run `/start-dev-loop` in OpenCode for the live path, use `/start-dev-loop dry-run` for a safe rehearsal, or execute `scripts/start-dev-loop.ps1` directly. That entry point sets up the autonomous environment, including `OPENCODE_AUTONOMOUS_ENABLED=1`, and then calls `scripts/autonomous-dev-loop.ps1`, which owns the real runtime flow.",
+      },
+      {
+        title: "Choose live mode or dry-run on purpose",
+        detail:
+          "Live mode keeps the full shipping path active, so an approved run can commit, push, and trigger a Vercel production deployment. Dry-run still creates the issue, implementation, review output, and shared runtime trail, but it stops before commit, push, and production deployment so beginners can rehearse the loop safely.",
       },
       {
         title: "Product-owner defines the work first",
         detail:
-          "Inside `scripts/autonomous-dev-loop.ps1`, the first Codex role is the product-owner. It uses the `requirements-thinker` skill to shape the next improvement into a clear GitHub issue, then writes that issue number to `.opencode/runtime/latest-issue.txt` so the rest of the run knows exactly what to build.",
+          "Inside `scripts/autonomous-dev-loop.ps1`, the loop first checks for the oldest open GitHub issue before adding more backlog. If no open issue exists, the first Codex role is the product-owner, which uses the `requirements-thinker` skill to shape the next improvement into a clear GitHub issue and then writes that issue number to `.opencode/runtime/latest-issue.txt` so the rest of the run knows exactly what to build.",
       },
       {
         title: "Developer implements and hands off",
         detail:
-          "The second Codex role is the developer. It uses the `feature-implementer` skill to read the created issue, make the smallest complete code or content change, run relevant validation, and save a reviewer-facing summary in `.opencode/runtime/developer-handoff.md`.",
+          "The second Codex role is the developer. It uses the `feature-implementer` skill to read the chosen issue, ask product-owner questions when the ticket is still unclear, make the smallest complete code or content change, run relevant validation, and save a reviewer-facing summary in `.opencode/runtime/developer-handoff.md`.",
       },
       {
         title: "Reviewer decides whether shipping is allowed",
         detail:
-          "The third Codex role is the reviewer. It uses the `change-reviewer` skill to compare the implementation against the issue and developer handoff, then writes either `APPROVED` or `REQUEST_CHANGES` to `.opencode/runtime/latest-review.md`. If changes are requested, the loop can send the work back to the developer for another pass before review runs again.",
+          "The third Codex role is the reviewer. It uses the `change-reviewer` skill to compare the implementation against the issue and developer handoff, then writes either `APPROVED` or `REQUEST_CHANGES` to `.opencode/runtime/latest-review.md`. If changes are requested, the loop sends the work back to the developer and keeps re-running review until the issue is approved or clearly blocked.",
       },
       {
         title: "Runtime files explain the state of the run",
         detail:
-          "During and after the run, `.opencode/runtime/latest-issue.txt` stores the current issue number, `.opencode/runtime/developer-handoff.md` stores the developer summary, `.opencode/runtime/latest-review.md` stores the latest review outcome, `.opencode/runtime/latest-deploy.txt` stores the most recent deployment note, and `.opencode/runtime/logs/` keeps the timestamped execution logs.",
+          "During and after the run, `.opencode/runtime/latest-issue.txt` stores the current issue number, `.opencode/runtime/developer-handoff.md` stores the developer summary, `.opencode/runtime/product-owner-answers.md` stores the latest product-owner clarification answers when questions were needed, `.opencode/runtime/latest-review.md` stores the latest review outcome, `.opencode/runtime/latest-deploy.txt` stores the most recent deployment note, and `.opencode/runtime/logs/` keeps the timestamped execution logs.",
       },
       {
         title: "Approval gates commit, push, and deploy",
@@ -225,13 +232,15 @@ export const guideSections: GuideSection[] = [
       },
     ],
     deliverables: [
-      "A GitHub issue created by the product-owner and mirrored locally in `.opencode/runtime/latest-issue.txt`.",
-      "A developer handoff in `.opencode/runtime/developer-handoff.md`, a reviewer decision in `.opencode/runtime/latest-review.md`, and execution details in `.opencode/runtime/logs/`.",
+      "A chosen GitHub issue number mirrored locally in `.opencode/runtime/latest-issue.txt`, whether it came from the existing backlog or a newly created product-owner issue.",
+      "A developer handoff in `.opencode/runtime/developer-handoff.md`, optional product-owner clarification answers in `.opencode/runtime/product-owner-answers.md`, a reviewer decision in `.opencode/runtime/latest-review.md`, and execution details in `.opencode/runtime/logs/`.",
+      "A safe rehearsal path where dry-run proves the workflow without changing Git history or production.",
       "A deployment note in `.opencode/runtime/latest-deploy.txt` when shipping happens after approval.",
       "A commit, push, and deploy only when the reviewer finishes with `APPROVED`.",
     ],
     pitfalls: [
       "Starting the loop outside this repository, which breaks the script path and runtime file assumptions.",
+      "Using live mode for a first rehearsal when dry-run would let you validate the workflow with less risk.",
       "Skipping the wrapper details and not realizing `/start-dev-loop` and `scripts/start-dev-loop.ps1` both lead into `scripts/autonomous-dev-loop.ps1`.",
       "Treating the developer handoff as the final answer instead of waiting for the reviewer decision.",
       "Assuming commit, push, or deploy can happen after `REQUEST_CHANGES`; they cannot.",
@@ -244,9 +253,9 @@ export const guideSections: GuideSection[] = [
       ],
       tasks: [
         "Start the loop with `/start-dev-loop`, use `/start-dev-loop dry-run` to skip shipping, or run `scripts/start-dev-loop.ps1`, then note that the wrapper hands control to `scripts/autonomous-dev-loop.ps1`.",
-        "Have the product-owner use `requirements-thinker` to create the issue and save its number in `.opencode/runtime/latest-issue.txt`.",
-        "Have the developer use `feature-implementer` to complete the issue and write `.opencode/runtime/developer-handoff.md`.",
-        "Have the reviewer use `change-reviewer` to write `APPROVED` or `REQUEST_CHANGES` into `.opencode/runtime/latest-review.md`.",
+        "Have the loop check for the oldest open GitHub issue first, and only ask the product-owner to create a new one when no open issue exists.",
+        "Have the developer use `feature-implementer` to complete the issue, asking the product-owner follow-up questions when needed and writing `.opencode/runtime/developer-handoff.md` once the work is clear enough to implement.",
+        "Have the reviewer use `change-reviewer` to write `APPROVED` or `REQUEST_CHANGES` into `.opencode/runtime/latest-review.md`, then keep cycling the developer and reviewer until the blocking findings are gone.",
         "Read `.opencode/runtime/latest-deploy.txt` and `.opencode/runtime/logs/` to confirm whether approval led to commit, push, and deployment.",
       ],
     },
@@ -760,5 +769,30 @@ export const multiAgentWorkflow = [
     skill: "change-reviewer",
     title: "Review before shipping",
     detail: "Compare the final changes against the request, look for gaps or regressions, and give a ship recommendation.",
+  },
+];
+
+export const loopModeCards = [
+  {
+    title: "Dry-run first",
+    command: "/start-dev-loop dry-run",
+    tone: "Safe rehearsal",
+    detail:
+      "Use this when you want to watch the full product-owner -> developer -> reviewer flow, inspect the runtime files, and confirm the prompts make sense before anything ships.",
+    outcomes: [
+      "Uses the chosen issue, runs implementation and review, and writes the runtime logs.",
+      "Skips commit, push, and production deployment even after approval.",
+    ],
+  },
+  {
+    title: "Live mode",
+    command: "/start-dev-loop",
+    tone: "Production path",
+    detail:
+      "Use this after you trust the workflow and are ready for an approved run to update the repository and trigger Vercel from `main`.",
+    outcomes: [
+      "Runs the same issue, implementation, and review flow as dry-run.",
+      "Commits, pushes, and starts production deployment after `APPROVED`.",
+    ],
   },
 ];
